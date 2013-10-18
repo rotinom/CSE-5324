@@ -6,6 +6,7 @@ public interface Session {
 		OK,
 		LoginRequired,
 		LoginFailed,
+		UserNameInUse,
 		PasswordNotComplicated
 	};
 
@@ -30,6 +31,16 @@ public interface Session {
 	 * @return true if the password is complex enough, false otherwise
 	 */
 	boolean validate_password(String password);
+	
+	/**
+	 * Register the user in the system
+	 * 
+	 * @param username The username to register
+	 * @param password The user's password
+	 * @return
+	 */
+	SessionStateEnum register_user(String username, String password);
+	
 	
 	/**
 	 * This function will allow the session to log in.

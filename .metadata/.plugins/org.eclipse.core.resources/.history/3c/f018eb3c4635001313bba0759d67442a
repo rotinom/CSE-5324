@@ -1,0 +1,9 @@
+package com.mytutor;
+
+public interface Session {
+
+	boolean validate_username(String name);
+	boolean validate_password(String password);
+	
+	abstract Session(String username, String password);
+}

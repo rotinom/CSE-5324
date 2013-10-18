@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="MyTutorTests" project="MyTutorTests" tests="6" started="6" failures="5" errors="1" ignored="0">
+  <testsuite name="Test [emulator-5554]" time="0.52">
+    <testsuite name="com.mytutor.test.LocalSessionTests" time="0.52">
+      <testcase name="testChange_password " classname="com.mytutor.test.LocalSessionTests" time="0.002">
+        <failure>junit.framework.AssertionFailedError: Not yet implemented&#13;
+at com.mytutor.test.LocalSessionTests.testChange_password(LocalSessionTests.java:39)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</failure>
+      </testcase>
+      <testcase name="testLocalSession " classname="com.mytutor.test.LocalSessionTests" time="0.071">
+        <failure>junit.framework.AssertionFailedError: Not yet implemented&#13;
+at com.mytutor.test.LocalSessionTests.testLocalSession(LocalSessionTests.java:20)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</failure>
+      </testcase>
+      <testcase name="testLogin " classname="com.mytutor.test.LocalSessionTests" time="0.131">
+        <failure>junit.framework.AssertionFailedError: Not yet implemented&#13;
+at com.mytutor.test.LocalSessionTests.testLogin(LocalSessionTests.java:35)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</failure>
+      </testcase>
+      <testcase name="testSearch " classname="com.mytutor.test.LocalSessionTests" time="0.053">
+        <failure>junit.framework.AssertionFailedError: Not yet implemented&#13;
+at com.mytutor.test.LocalSessionTests.testSearch(LocalSessionTests.java:43)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</failure>
+      </testcase>
+      <testcase name="testValidate_password " classname="com.mytutor.test.LocalSessionTests" time="0.053">
+        <failure>junit.framework.AssertionFailedError: Not yet implemented&#13;
+at com.mytutor.test.LocalSessionTests.testValidate_password(LocalSessionTests.java:31)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</failure>
+      </testcase>
+      <testcase name="testValidate_username " classname="com.mytutor.test.LocalSessionTests" time="0.053">
+        <error>java.lang.NullPointerException&#13;
+at com.mytutor.test.LocalSessionTests.testValidate_username(LocalSessionTests.java:24)&#13;
+at java.lang.reflect.Method.invokeNative(Native Method)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:191)&#13;
+at android.test.AndroidTestRunner.runTest(AndroidTestRunner.java:176)&#13;
+at android.test.InstrumentationTestRunner.onStart(InstrumentationTestRunner.java:554)&#13;
+at android.app.Instrumentation$InstrumentationThread.run(Instrumentation.java:1701)&#13;
+
+</error>
+      </testcase>
+    </testsuite>
+  </testsuite>
+</testrun>

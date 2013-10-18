@@ -1,0 +1,5 @@
+package com.mytutor;
+
+public abstract class Session {
+
+}

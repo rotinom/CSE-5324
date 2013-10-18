@@ -1,0 +1,45 @@
+package com.mytutor;
+
+
+import java.util.*;
+
+public class LocalSession implements Session {
+
+	private Set<String> userNames_;
+	
+	public LocalSession() {
+		userNames_.add("alice");
+		userNames_.add("bob");
+	}
+	
+	@Override
+	public boolean validate_username(String name) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean validate_password(String password) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public SessionStateEnum login(String name, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SessionStateEnum change_password(String username,
+			String old_password, String new_password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SessionStateEnum search(SearchParams[] params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

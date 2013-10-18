@@ -1,0 +1,10 @@
+
+public class LocalSession implements Session {
+
+	@Override
+	public boolean validate_username(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+}

@@ -1,0 +1,59 @@
+package com.mytutor;
+
+
+import java.util.*;
+
+import com.mytutor.Session.SessionStateEnum;
+
+public class LocalSession implements Session {
+
+	private Set<String> userNames_ = new HashSet<String>();
+	
+	public LocalSession() {
+	}
+	
+	@Override
+	public boolean validate_username(String name) {
+		return !(userNames_.contains(name));
+	}
+
+	@Override
+	public boolean validate_password(String password) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	/**
+	 * Register the user in the system
+	 * 
+	 * @param username The username to register
+	 * @param password The user's password
+	 * @return
+	 */
+	public SessionStateEnum register_user(String username, String password){
+		if(!validate_username(username)){
+			return SessionStateEnum.UserNameInUse;
+		}
+		
+		return SessionStateEnum.OK;
+	}
+
+	@Override
+	public SessionStateEnum login(String name, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SessionStateEnum change_password(String username,
+			String old_password, String new_password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SessionStateEnum search(SearchParams[] params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
