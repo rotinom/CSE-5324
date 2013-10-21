@@ -3,7 +3,10 @@ package com.mytutor.session;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 
 import android.util.Base64;
 
@@ -50,7 +53,7 @@ public class Password {
      * @return String representing the salt + hashed password delimited by a '$'
      * @throws Exception
      */
-    public static String hash(String password, String salt) throws Exception {
+    public static String hash(String password, String salt) {
         // store the salt with the password
     	byte[] bsalt = Base64.decode(salt, Base64.DEFAULT);
         return salt + delimiter + hash_(password, bsalt);
@@ -80,23 +83,34 @@ public class Password {
     
     // using PBKDF2 from Sun, an alternative is https://github.com/wg/scrypt
     // cf. http://www.unlimitednovelty.com/2012/03/dont-use-bcrypt.html
-    private static String hash_(String password, byte[] salt) throws Exception {
+    private static String hash_(String password, byte[] salt) {
     	
     	// Verify against null/empty passwords
         if (password == null || password.length() == 0){
             throw new IllegalArgumentException("Empty passwords are not supported.");
         }
         
-        // Get our key factory and generate a key
-        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        SecretKey key = f.generateSecret(
-    		new PBEKeySpec(
-    				password.toCharArray(), 
-    				salt, 
-    				iterations, 
-    				desiredKeyLen
-			)
-		);
-        return Base64.encodeToString(key.getEncoded(), Base64.DEFAULT);
+
+		try {
+	        // Get our key factory and generate a key
+	        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		
+	        SecretKey key = f.generateSecret(
+				new PBEKeySpec(
+						password.toCharArray(), 
+						salt, 
+						iterations, 
+						desiredKeyLen
+				)
+			);
+			
+			return Base64.encodeToString(key.getEncoded(), Base64.DEFAULT);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "INVALID_HASH_VALUE";
     }
 }

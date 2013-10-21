@@ -5,19 +5,19 @@ import java.security.SecureRandom;
 import java.util.*;
 
 import com.mytutor.Session.SessionStateEnum;
+import com.mytutor.session.Password;
 
 
 public class LocalSession implements Session {
 
-	//private Map<String> userNames_ = new HashMap<String>();
+	private Map<String, String> userNames_ = new HashMap<String, String>();
 	
 	public LocalSession() {
 	}
 	
 	@Override
 	public boolean validate_username(String name) {
-		return false;
-		//return !userNames_.contains(name);
+		return !userNames_.containsKey(name);
 	}
 
 	/**
@@ -47,15 +47,18 @@ public class LocalSession implements Session {
 			return SessionStateEnum.PasswordNotComplicated;
 		}
 		
-		// Create a 256-bit salt
-		SecureRandom sr = new SecureRandom();
-		byte[] salt = new byte[132];
-		sr.nextBytes(salt);
+		SessionStateEnum ret = SessionStateEnum.OK;
 		
+		// Create a 256-bit salt
+		String salt = Password.salt();
+		String hashed_password = Password.hash(password, salt);
+		
+		// Save off the username and password
+		userNames_.put(username,  hashed_password);
 		
 		
 		// A-OK
-		return SessionStateEnum.OK;
+		return ret;
 	}
 
 	@Override
