@@ -1,6 +1,6 @@
 package com.mytutor.test;
 
-import com.mytutor.LocalSession;
+import com.mytutor.session.LocalSession;
 
 import junit.framework.TestCase;
 
