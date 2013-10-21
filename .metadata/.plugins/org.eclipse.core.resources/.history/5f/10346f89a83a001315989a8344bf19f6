@@ -33,7 +33,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="18dp"
         android:layout_toRightOf="@+id/button2"
-        android:onClick="onClickProfile"
         android:text="@string/profile_button" />
 
 </RelativeLayout>

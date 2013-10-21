@@ -6,6 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="search_button">Search</string>
     <string name="login_button">Log In</string>
-    <string name="profile_button">Profile</string>
+    <string name="tutor_button">Tutor Profile</string>
 
 </resources>

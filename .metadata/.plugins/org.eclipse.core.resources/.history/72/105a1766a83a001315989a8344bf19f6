@@ -27,11 +27,4 @@ public class MainActivity extends Activity {
     	Log.d("MainActivity", "Got login click event");
     }
     
-    public void onClickSearch(View view) {
-    	Log.d("MainActivity", "Got search click event");
-    }
-    
-    public void onClickProfile(View view) {
-    	Log.d("MainActivity", "Got profile click event");
-    }
 }

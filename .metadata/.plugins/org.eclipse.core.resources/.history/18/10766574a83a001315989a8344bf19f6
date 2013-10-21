@@ -23,7 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:onClick="onClickSearch"
         android:text="@string/search_button" />
 
     <Button
@@ -33,7 +32,6 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="18dp"
         android:layout_toRightOf="@+id/button2"
-        android:onClick="onClickProfile"
         android:text="@string/profile_button" />
 
 </RelativeLayout>
