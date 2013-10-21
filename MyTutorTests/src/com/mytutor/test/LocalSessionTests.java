@@ -21,10 +21,10 @@ public class LocalSessionTests extends TestCase {
 	}
 
 	public void testValidate_username() {
-		assertTrue(localSession_.validate_username("foo"));
-		assertTrue(localSession_.validate_username("bar"));
 		assertTrue(localSession_.validate_username("alice"));
-		assertTrue(localSession_.validate_username("bob"));
+		
+		// Register a user named alice
+		
 	}
 
 	public void testValidate_password() {

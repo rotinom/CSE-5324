@@ -6,16 +6,18 @@ import java.util.*;
 
 import com.mytutor.Session.SessionStateEnum;
 
+
 public class LocalSession implements Session {
 
-	private Set<String> userNames_ = new HashSet<String>();
+	//private Map<String> userNames_ = new HashMap<String>();
 	
 	public LocalSession() {
 	}
 	
 	@Override
 	public boolean validate_username(String name) {
-		return !userNames_.contains(name);
+		return false;
+		//return !userNames_.contains(name);
 	}
 
 	/**

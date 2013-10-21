@@ -1,0 +1,37 @@
+package com.mytutor.test;
+
+
+
+import android.util.Log;
+
+import com.mytutor.session.Password;
+
+import junit.framework.TestCase;
+
+public class PasswordTests extends TestCase {
+
+	protected void setUp() throws Exception {
+		super.setUp();
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	public void testHash() {
+		try{
+			String salt = Password.salt();
+			String asdf = Password.hash("blech", salt);
+			Log.d("PasswordTests", "hash of blech is: " + asdf);
+			System.out.println(asdf);
+		}
+		catch(Exception e){
+			
+		}
+	}
+
+	public void testAuthenticate() {
+		fail("Not yet implemented");
+	}
+
+}
