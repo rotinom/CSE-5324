@@ -27,16 +27,18 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-        
+
         <uses-library android:name="android.test.runner" />
 
+        <activity
+            android:name="com.mytutor.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+    </application>
 
-            
-	</application>
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="your tests label"
+        android:targetPackage="com.mytutor" />
 
-
-    <instrumentation android:name="android.test.InstrumentationTestRunner"
-			android:targetPackage="com.mytutor"
-			android:label="your tests label" />
-    
 </manifest>

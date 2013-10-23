@@ -36,7 +36,5 @@ public class MainActivity extends Activity {
     
     public void onClickProfile(View view) {
     	Log.d("MainActivity", "Got profile click event");
-		Intent intent = new Intent(this, ProfileActivity.class);
-		startActivity(intent);
     }
 }
