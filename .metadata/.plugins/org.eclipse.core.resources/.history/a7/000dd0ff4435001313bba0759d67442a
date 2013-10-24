@@ -1,9 +1,0 @@
-package com.mytutor;
-
-public abstract class Session {
-
-	
-	public abstract boolean validate_username();
-	
-	
-}

@@ -1,7 +1,0 @@
-
-public interface Session {
-
-	boolean validate_username(String username);
-	
-	boolean validate
-}
