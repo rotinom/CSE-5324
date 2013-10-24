@@ -10,18 +10,30 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/mytutor_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <!-- Splash screen -->
         <activity
-            android:name="com.mytutor.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.mytutor.SplashScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main activity -->
+        <activity
+            android:name="com.mytutor.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <!-- Login activity -->
         <activity
             android:name="com.mytutor.LoginActivity"
             android:label="@string/title_activity_login"
@@ -30,6 +42,7 @@
 
         <uses-library android:name="android.test.runner" />
 
+        <!-- Profile activity -->
         <activity
             android:name="com.mytutor.ProfileActivity"
             android:label="@string/title_activity_profile" >
