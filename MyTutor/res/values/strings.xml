@@ -7,5 +7,6 @@
     <string name="search_button">Search</string>
     <string name="login_button">Log In</string>
     <string name="profile_button">Profile</string>
+    <string name="title_activity_message">MessageActivity</string>
 
 </resources>
