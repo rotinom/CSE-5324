@@ -47,29 +47,29 @@ local.properties
 ############################################
 # Eclipse .gitignore
 
-MyTutor/*.pydevproject
-MyTutor/.project
-MyTutor/.metadata
-MyTutor/bin/**
-MyTutor/tmp/**
-MyTutor/tmp/**/*
-MyTutor/*.tmp
-MyTutor/*.bak
-MyTutor/*.swp
-MyTutor/*~.nib
-MyTutor/local.properties
-MyTutor/.classpath
-MyTutor/.settings/
-MyTutor/.loadpath
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
 
 # External tool builders
-MyTutor/.externalToolBuilders/
+.externalToolBuilders/
 
 # Locally stored "Eclipse launch configurations"
-MyTutor/*.launch
+*.launch
 
 # CDT-specific
-MyTutor/.cproject
+.cproject
 
 # PDT-specific
-MyTutor/.buildpath
+.buildpath
