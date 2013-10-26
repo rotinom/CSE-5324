@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
 
@@ -13,6 +14,21 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        
+        ImageButton btn1 = (ImageButton)findViewById(R.id.login_button);
+
+        btn1.setOnClickListener(
+//    		new View.OnClickListener()
+//    		{
+//    			public void onClick(View v)
+//    			{
+//    		    	Log.d("MainActivity", "Got login click event");
+//    				Intent intent = new Intent(this, LoginActivity.class);
+//    				startActivity(intent);
+//    			}
+//    		}
+		);        
     }
 
 

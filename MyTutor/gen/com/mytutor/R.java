@@ -42,18 +42,18 @@ public final class R {
         public static final int button1=0x7f0a000a;
         public static final int button2=0x7f0a0009;
         public static final int button3=0x7f0a0008;
+        public static final int chat_button=0x7f0a000f;
         public static final int email=0x7f0a0003;
-        public static final int imageButton1=0x7f0a000c;
-        public static final int imageButton2=0x7f0a000d;
-        public static final int imageButton3=0x7f0a000e;
-        public static final int imageButton4=0x7f0a000f;
         public static final int imgLogo=0x7f0a000b;
         public static final int item1=0x7f0a0012;
         public static final int login=0x7f0a0005;
+        public static final int login_button=0x7f0a000c;
         public static final int login_form=0x7f0a0002;
         public static final int login_status=0x7f0a0000;
         public static final int login_status_message=0x7f0a0001;
         public static final int password=0x7f0a0004;
+        public static final int profile_button=0x7f0a000e;
+        public static final int search_button=0x7f0a000d;
         public static final int sign_in_button=0x7f0a0006;
     }
     public static final class layout {
