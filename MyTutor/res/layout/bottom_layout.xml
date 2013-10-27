@@ -2,22 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="35dp"
-    android:background="@android:color/black"
+    android:alpha="100"
+    android:background="@null"
     android:gravity="center_horizontal|center_vertical"
     android:orientation="horizontal" >
-
-    <ImageButton
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:src="@drawable/ic_action_accounts" />
 
     <ImageButton
         android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
         android:background="@null"
         android:src="@drawable/ic_action_search" />
 
@@ -30,7 +23,7 @@
         android:src="@drawable/ic_action_person" />
         
     <ImageButton
-        android:id="@+id/chat_button"
+        android:id="@+id/msg_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"

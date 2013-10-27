@@ -51,6 +51,12 @@
             android:name="com.mytutor.MessageActivity"
             android:label="@string/title_activity_message" >
         </activity>
+        <activity
+            android:name="com.mytutor.MapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_map"
+            android:theme="@style/FullscreenTheme" >
+        </activity>
     </application>
 
     <instrumentation

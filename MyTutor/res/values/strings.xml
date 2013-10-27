@@ -8,5 +8,8 @@
     <string name="login_button">Log In</string>
     <string name="profile_button">Profile</string>
     <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>
