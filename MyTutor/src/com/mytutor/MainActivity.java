@@ -92,6 +92,8 @@ public class MainActivity extends Activity {
     
     public void onClickSearch(View view) {
     	Log.d("MainActivity", "Got search click event");
+		Intent intent = new Intent(this, com.mytutor.search.SearchParams.class);
+		startActivity(intent);
     }
     
     public void onClickProfile(View view) {
