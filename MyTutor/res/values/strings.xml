@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">MyTutor</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="search_button">Search</string>
     <string name="login_button">Log In</string>
-    <string name="profile_button">Profile</string><string name="title_activity_message">MessageActivity</string>
+    <string name="profile_button">Profile</string>
+    <string name="title_activity_message">MessageActivity</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="title_activity_search">SearchActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
 </resources>

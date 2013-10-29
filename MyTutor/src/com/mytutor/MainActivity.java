@@ -62,9 +62,7 @@ public class MainActivity extends Activity {
     				v.getContext().startActivity(intent);
     			}
     		}
-		);         
-        
-        
+		);   
     }
 
 
