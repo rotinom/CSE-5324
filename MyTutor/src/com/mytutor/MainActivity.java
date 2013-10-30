@@ -88,6 +88,12 @@ public class MainActivity extends Activity {
 		}
     }
     
+    public void onClickLogin(View view) {
+    	Log.d("MainActivity", "Got login click event");
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+    }
+    
     public void onClickSearch(View view) {
     	Log.d("MainActivity", "Got search click event");
 		Intent intent = new Intent(this, com.mytutor.search.SearchParams.class);
