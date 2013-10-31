@@ -4,10 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -93,6 +95,14 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
+	
+    public void onClickRegister(View view) {
+    	Log.d("LoginActivity", "Got register click event");
+//		Intent intent = new Intent(this, LoginActivity.class);
+//		startActivity(intent);
+    }
+	
+	
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
