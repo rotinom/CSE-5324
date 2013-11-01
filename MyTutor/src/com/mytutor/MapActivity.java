@@ -4,20 +4,26 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.*;
+import com.mytutor.R;
+import com.mytutor.R.drawable;
+import com.mytutor.R.id;
+import com.mytutor.R.layout;
+
 import android.app.Activity;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 
-public class MapActivity 
-extends 
-	Activity 
-implements
+public class MapActivity extends Activity implements
 	GooglePlayServicesClient.ConnectionCallbacks,
     GooglePlayServicesClient.OnConnectionFailedListener	
 {
@@ -49,6 +55,35 @@ implements
         setContentView(R.layout.activity_map);     
         map_ = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map_.setMyLocationEnabled(true);
+        
+        
+        // Set up the custom info window adapter
+        map_.setInfoWindowAdapter(new InfoWindowAdapter() {
+            
+        	// Default InfoWindow frame
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+             
+            // Defines the custom info window.
+            @Override
+            public View getInfoContents(Marker marker) 
+            {
+                View myContentsView = getLayoutInflater().inflate(R.layout.activity_map_infowindow, null);
+                
+                TextView tvTitle = ((TextView)myContentsView.findViewById(R.id.title));
+                tvTitle.setText(marker.getTitle());
+                
+                TextView tvSnippet = ((TextView)myContentsView.findViewById(R.id.snippet));
+                tvSnippet.setText(marker.getSnippet());
+                
+                ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
+                
+               
+                return myContentsView;
+            }
+        });
     }
     
 
@@ -85,7 +120,7 @@ implements
         }
 		
 	}
-
+	
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		Log.d("MapActivity", "onConnected");
@@ -105,14 +140,13 @@ implements
 			)
 		);
 		
-		
-        // You can customize the marker image using images bundled with
-        // your app, or dynamically generated bitmaps. 
-        map_.addMarker(
-    		new MarkerOptions()
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mytutor_icon))
-                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                .position(new LatLng(loc.getLatitude()+0.001, loc.getLongitude()+0.001)));	
+        Marker user = map_.addMarker(new MarkerOptions()
+	        .position(new LatLng(0, 0))
+	        .title("Sean Crane")
+	        .snippet(" Programming/Android")
+	        .position(new LatLng(loc.getLatitude()-0.001, loc.getLongitude()-0.001))
+	        );
+        
 	}
 	
 
