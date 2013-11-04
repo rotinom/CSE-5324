@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -44,10 +45,10 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private AccountManager mAccountManager;
+    private AccountManager accountManager_;
     private String mAuthTokenType;
 	
-	
+	private final static String log_name = "AuthenticatorActivity";
 	
 	/**
 	 * A dummy authentication store containing known user names and passwords.
@@ -82,6 +83,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_authenticate);
+		
+		accountManager_ = AccountManager.get(getBaseContext());
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
@@ -205,20 +208,26 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	
 	
 	private void finishLogin(Intent intent) {
-	    String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-	    String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
-	    final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+		Log.d(log_name, "Finishing login");
+	    String userName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+	    String password = intent.getStringExtra(PARAM_USER_PASS);
+	    
+	    Log.d(log_name, "Creating account with username/password: " + userName + "/" + password);
+	    final Account account = new Account(userName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
 	    
 	    
 	    if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+	    	Log.d(log_name, "ARG_IS_ADDING_NEW_ACCOUNT: true");
 	        String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
 	        String authtokenType = mAuthTokenType;
+	        
+	        
 	        // Creating the account on the device and setting the auth token we got
 	        // (Not setting the auth token will cause another call to the server to authenticate the user)
-	        mAccountManager.addAccountExplicitly(account, accountPassword, null);
-	        mAccountManager.setAuthToken(account, authtokenType, authtoken);
+	        accountManager_.addAccountExplicitly(account, password, null);
+	        accountManager_.setAuthToken(account, authtokenType, authtoken);
 	    } else {
-	        mAccountManager.setPassword(account, accountPassword);
+	        accountManager_.setPassword(account, password);
 	    }
 	    setAccountAuthenticatorResult(intent.getExtras());
 	    setResult(RESULT_OK, intent);
