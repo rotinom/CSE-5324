@@ -37,6 +37,7 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -60,19 +61,19 @@
             android:label="@string/title_activity_register"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-        
+
         <!-- Profile activity -->
         <activity
             android:name="com.mytutor.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
-        
+
         <!-- Message activity -->
         <activity
             android:name="com.mytutor.MessageActivity"
             android:label="@string/title_activity_message" >
         </activity>
-        
+
         <!-- Map activity -->
         <activity
             android:name="com.mytutor.MapActivity"
@@ -86,7 +87,7 @@
             android:name="com.mytutor.search.SearchParams"
             android:label="@string/title_activity_search" >
         </activity>
-        
+
         <!-- Search Results activity -->
         <activity
             android:name="com.mytutor.search.SearchResults"
@@ -94,10 +95,16 @@
         </activity>
 
         <uses-library android:name="android.test.runner" />
-        
+
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyApyxx3guWBNutcY2viAoVwqzHelacNmqk" />
+
+        <activity
+            android:name="com.mytutor.authentication.AuthenticateActivity"
+            android:label="@string/title_activity_authenticate"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
     </application>
 
     <instrumentation
