@@ -8,7 +8,7 @@ public class MyTutorAuthenticationService extends Service {
 
 	@Override
     public IBinder onBind(Intent intent) {
-        UdinicAuthenticator authenticator = new UdinicAuthenticator(this);
+		MyTutorAuthenticator authenticator = new MyTutorAuthenticator(this);
         return authenticator.getIBinder();
     }
 
