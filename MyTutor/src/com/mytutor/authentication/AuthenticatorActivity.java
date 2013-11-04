@@ -85,6 +85,12 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 		setContentView(R.layout.activity_authenticate);
 		
 		accountManager_ = AccountManager.get(getBaseContext());
+		
+		
+        mAuthTokenType = getIntent().getStringExtra(ARG_AUTH_TYPE);
+        if (mAuthTokenType == null) {
+            mAuthTokenType = AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS;
+        }
 
 		// Set up the login form.
 		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
