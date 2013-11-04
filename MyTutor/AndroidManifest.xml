@@ -101,6 +101,12 @@
             android:name="com.mytutor.search.SearchResults"
             android:label="@string/title_activity_results" >
         </activity>
+        
+        <!-- Search Results activity -->
+        <activity
+            android:name="com.mytutor.authentication.AuthenticatorActivity"
+            android:label="@string/title_activity_authenticator" >
+        </activity>
 
         <uses-library android:name="android.test.runner" />
 

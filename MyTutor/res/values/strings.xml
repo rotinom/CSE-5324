@@ -22,4 +22,6 @@
         <item >50 Miles</item>
     </string-array>
     <string name="title_activity_results">Search Results</string>
+    <string name="system_authenticator_label">MyTutor</string>
+    <string name="title_activity_authenticator">AuthenticatorActivity</string>
 </resources>

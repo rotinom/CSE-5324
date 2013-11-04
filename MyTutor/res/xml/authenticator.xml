@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    
-</resources>
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:accountType="com.mytutor"
+                       android:icon="@drawable/mytutor_icon"
+                       android:smallIcon="@drawable/mytutor_icon"
+                       android:label="@string/system_authenticator_label"
+                       android:accountPreferences="@xml/prefs"/>
