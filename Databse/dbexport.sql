@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: omega.uta.edu
--- Generation Time: Oct 27, 2013 at 07:18 PM
+-- Generation Time: Nov 03, 2013 at 09:54 PM
 -- Server version: 5.0.95
 -- PHP Version: 5.1.6
 
@@ -112,13 +112,52 @@ INSERT INTO `subCategories` VALUES(30, 'Music', 6, 'Other');
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subCatToTutor`
+--
+
+CREATE TABLE `subCatToTutor` (
+  `tableId` int(11) NOT NULL auto_increment,
+  `tutorId` int(11) NOT NULL,
+  `subCategory` int(11) NOT NULL,
+  PRIMARY KEY  (`tableId`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+
+--
+-- Dumping data for table `subCatToTutor`
+--
+
+INSERT INTO `subCatToTutor` VALUES(1, 1, 1);
+INSERT INTO `subCatToTutor` VALUES(2, 1, 2);
+INSERT INTO `subCatToTutor` VALUES(3, 1, 3);
+INSERT INTO `subCatToTutor` VALUES(4, 1, 23);
+INSERT INTO `subCatToTutor` VALUES(5, 1, 24);
+INSERT INTO `subCatToTutor` VALUES(6, 1, 21);
+INSERT INTO `subCatToTutor` VALUES(7, 2, 21);
+INSERT INTO `subCatToTutor` VALUES(8, 2, 23);
+INSERT INTO `subCatToTutor` VALUES(9, 2, 24);
+INSERT INTO `subCatToTutor` VALUES(10, 2, 1);
+INSERT INTO `subCatToTutor` VALUES(11, 2, 2);
+INSERT INTO `subCatToTutor` VALUES(12, 2, 3);
+INSERT INTO `subCatToTutor` VALUES(13, 3, 1);
+INSERT INTO `subCatToTutor` VALUES(14, 3, 2);
+INSERT INTO `subCatToTutor` VALUES(15, 3, 3);
+INSERT INTO `subCatToTutor` VALUES(16, 3, 21);
+INSERT INTO `subCatToTutor` VALUES(17, 3, 23);
+INSERT INTO `subCatToTutor` VALUES(18, 3, 24);
+INSERT INTO `subCatToTutor` VALUES(19, 4, 22);
+INSERT INTO `subCatToTutor` VALUES(20, 4, 23);
+INSERT INTO `subCatToTutor` VALUES(21, 4, 24);
+INSERT INTO `subCatToTutor` VALUES(22, 4, 25);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tutors`
 --
 
 CREATE TABLE `tutors` (
   `tutorId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
-  `category` varchar(255) NOT NULL,
   `zipcode` int(5) NOT NULL,
   `lat` double NOT NULL,
   `lon` double NOT NULL,
@@ -135,6 +174,10 @@ CREATE TABLE `tutors` (
 -- Dumping data for table `tutors`
 --
 
+INSERT INTO `tutors` VALUES(1, 1, 76063, 32.563183, -97.1416926, 60, 4.5, NULL, 'I love to tutor!', 'MWF 3-6 PM', 0);
+INSERT INTO `tutors` VALUES(2, 2, 76040, 32.821201, -97.1036396, 40, 4.3, NULL, 'I know everything...', 'Sat/Sun 1-5 PM', 1);
+INSERT INTO `tutors` VALUES(3, 3, 75052, 32.67942, -97.0283383, 45, 4.2, NULL, 'I''m great at tutoring ppl and would like to help you', 'Mon/Tues 8AM-8PM', NULL);
+INSERT INTO `tutors` VALUES(4, 4, 76244, 32.9458766, -97.276076, 75, 3.5, NULL, 'Go Stars!', 'Tues/Thurs/Sat 10AM-3PM', 1);
 
 -- --------------------------------------------------------
 
