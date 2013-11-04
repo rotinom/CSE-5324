@@ -9,8 +9,17 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_message">MessageActivity</string>
     <string name="title_activity_map">MapActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Search for a Tutor</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-
+    <string-array name="search_radius_strings">
+        <item >5 Miles</item>
+        <item >10 Miles</item>
+        <item >15 MIles</item>
+        <item >20 Miles</item>
+        <item >25 Miles</item>
+        <item >35 Miles</item>
+        <item >50 Miles</item>
+    </string-array>
+    <string name="title_activity_results">Search Results</string>
 </resources>
