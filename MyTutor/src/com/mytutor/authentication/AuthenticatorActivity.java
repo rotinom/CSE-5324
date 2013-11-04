@@ -138,7 +138,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	        	String authtoken = "asdfasdfasdf";
 	            final Intent res = new Intent();
 	            res.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
-	            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AccountParams.ACCOUNT_TYPE);
+	            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthenticationParams.ACCOUNT_TYPE);
 	            res.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
 	            res.putExtra(PARAM_USER_PASS, userPass);
 	            return res;
