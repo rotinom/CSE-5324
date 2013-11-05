@@ -17,53 +17,53 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        
-        // Set up handler for the msg_button on the bottom of the activity
-        ImageButton msg_button = (ImageButton)findViewById(R.id.msg_button);
-
-        msg_button.setOnClickListener(
-    		new View.OnClickListener()
-    		{
-    			public void onClick(View v)
-    			{
-    		    	Log.d("MainActivity", "Got message button click event");
-    				Intent intent = new Intent(v.getContext(), MessageActivity.class);
-    				v.getContext().startActivity(intent);
-    			}
-    		}
-		);    
-        
-        
-        // Set up handler for the profile button on the bottom of the activity
-        ImageButton profile_button = (ImageButton)findViewById(R.id.profile_button);
-
-        profile_button.setOnClickListener(
-    		new View.OnClickListener()
-    		{
-    			public void onClick(View v)
-    			{
-    		    	Log.d("MainActivity", "Got profile button click event");
-    				Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-    				v.getContext().startActivity(intent);
-    			}
-    		}
-		); 
-        
-        
-        // Set up handler for the profile button on the bottom of the activity
-        ImageButton search_button = (ImageButton)findViewById(R.id.search_button);
-
-        search_button.setOnClickListener(
-    		new View.OnClickListener()
-    		{
-    			public void onClick(View v)
-    			{
-    		    	Log.d("MainActivity", "Got map button click event");
-    				Intent intent = new Intent(v.getContext(), MapActivity.class);
-    				v.getContext().startActivity(intent);
-    			}
-    		}
-		);   
+//        
+//        // Set up handler for the msg_button on the bottom of the activity
+//        ImageButton msg_button = (ImageButton)findViewById(R.id.msg_button);
+//
+//        msg_button.setOnClickListener(
+//    		new View.OnClickListener()
+//    		{
+//    			public void onClick(View v)
+//    			{
+//    		    	Log.d("MainActivity", "Got message button click event");
+//    				Intent intent = new Intent(v.getContext(), MessageActivity.class);
+//    				v.getContext().startActivity(intent);
+//    			}
+//    		}
+//		);    
+//        
+//        
+//        // Set up handler for the profile button on the bottom of the activity
+//        ImageButton profile_button = (ImageButton)findViewById(R.id.profile_button);
+//
+//        profile_button.setOnClickListener(
+//    		new View.OnClickListener()
+//    		{
+//    			public void onClick(View v)
+//    			{
+//    		    	Log.d("MainActivity", "Got profile button click event");
+//    				Intent intent = new Intent(v.getContext(), ProfileActivity.class);
+//    				v.getContext().startActivity(intent);
+//    			}
+//    		}
+//		); 
+//        
+//        
+//        // Set up handler for the profile button on the bottom of the activity
+//        ImageButton search_button = (ImageButton)findViewById(R.id.search_button);
+//
+//        search_button.setOnClickListener(
+//    		new View.OnClickListener()
+//    		{
+//    			public void onClick(View v)
+//    			{
+//    		    	Log.d("MainActivity", "Got map button click event");
+//    				Intent intent = new Intent(v.getContext(), MapActivity.class);
+//    				v.getContext().startActivity(intent);
+//    			}
+//    		}
+//		);   
     }
 
 
