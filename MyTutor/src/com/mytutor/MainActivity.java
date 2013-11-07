@@ -106,4 +106,10 @@ public class MainActivity extends Activity {
 		Intent intent = new Intent(this, ProfileActivity.class);
 		startActivity(intent);
     }
+    
+    public void onClickSearchNearby(View view){
+    	Log.d("MainActivity::onClickMap", "Got map button click event");
+		Intent intent = new Intent(view.getContext(), MapActivity.class);
+		view.getContext().startActivity(intent);
+    }
 }
