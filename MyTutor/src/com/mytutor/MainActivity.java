@@ -1,6 +1,8 @@
 package com.mytutor;
 
 
+import com.mytutor.authentication.AuthenticationHelper;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,11 +13,15 @@ import android.view.View;
 import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
+	AuthenticationHelper ah_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        ah_ = new AuthenticationHelper(this);
+        
         
 //        
 //        // Set up handler for the msg_button on the bottom of the activity
@@ -78,14 +84,14 @@ public class MainActivity extends Activity {
     	Log.d("MainMenu", "Got a menu click event");
     	
 		switch (item.getItemId()) {
-		   	case R.id.action_login:
-				Log.d("MainActivity", "Got login click event");
-					Intent intent = new Intent(this, LoginActivity.class);
-					startActivity(intent);
-					return true;
 					
-		       default:
-		           return super.onOptionsItemSelected(item);
+		   	case R.id.action_remove_all_accts:
+				Log.d("MainActivity", "Got remove all accounts click event");
+				ah_.remove_all_of_our_accounts();
+				return true;
+					
+		   	default:
+		   		return super.onOptionsItemSelected(item);
 		}
     }
     
@@ -95,18 +101,28 @@ public class MainActivity extends Activity {
 		startActivity(intent);
     }
     
+    public void onClickRegister(View view) {
+    	Log.d("MainActivity", "Got register click event");
+		Intent intent = new Intent(this, RegisterActivity.class);
+		startActivity(intent);
+    }    
+    
     public void onClickSearch(View view) {
     	Log.d("MainActivity", "Got search click event");
 		Intent intent = new Intent(this, com.mytutor.search.SearchParams.class);
 		startActivity(intent);
     }
     
-    public void onClickProfile(View view) {
-    	Log.d("MainActivity", "Got profile click event");
-		Intent intent = new Intent(this, ProfileActivity.class);
-		startActivity(intent);
-    }
+//    public void onClickProfile(View view) {
+//    	Log.d("MainActivity", "Got profile click event");
+//		Intent intent = new Intent(this, ProfileActivity.class);
+//		startActivity(intent);
+//    }
     
+    /**
+     * Called when the "Search Nearby" button is clicked
+     * @param view
+     */
     public void onClickSearchNearby(View view){
     	Log.d("MainActivity::onClickMap", "Got map button click event");
 		Intent intent = new Intent(view.getContext(), MapActivity.class);
