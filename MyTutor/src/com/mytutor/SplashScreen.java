@@ -1,5 +1,7 @@
 package com.mytutor;
 
+import com.mytutor.session.ServerSession;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ public class SplashScreen extends Activity {
         //}, SPLASH_TIME_OUT);
         
         //Protocol.getInstance(this);
+        
+        ServerSession session = ServerSession.create(this.getApplicationContext());
 
         Thread welcomeThread = new Thread() {
 

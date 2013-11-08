@@ -40,22 +40,25 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
 import com.mytutor.R;
 import com.mytutor.search.CustomHttpClient;
+import com.mytutor.session.ServerSession;
 
 
-public class SearchParams extends Activity implements
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener
+public class SearchParams extends Activity 
 {
-
-	private final static int
-    CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
    private Map<String,String> subCatLookup_;
-   
-   private LocationClient mLocationClient;
+   ServerSession session_;
  
-   @Override
-   protected void onCreate(Bundle savedInstanceState) 
-   {
+   	@Override
+   	protected void onCreate(Bundle savedInstanceState) 
+   	{
+   		try {
+   			session_ = ServerSession.getInstance();
+   		} catch (Exception e1) {
+   			// TODO Auto-generated catch block
+   			e1.printStackTrace();
+   		}
+   		
+   		
 	   subCatLookup_ = new HashMap<String,String>();
 	   
 	   //allow network requests in main thread
@@ -72,7 +75,9 @@ GooglePlayServicesClient.OnConnectionFailedListener
 
 	   //create empty post parameters for php request
 	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-	   String response = null;
+	   String response;
+	   
+	   
           
        // call executeHttpPost method passing necessary parameters 
 	   try {
@@ -185,8 +190,11 @@ GooglePlayServicesClient.OnConnectionFailedListener
    		  }
 		); 
        
-       //create a new location client
-       mLocationClient = new LocationClient(this, this, this);
+       
+       	if(null != session_){
+       		String zipcode = this.getZipcodeFromLla(session_.getLat(), session_.getLon());
+       		zipcodeEdit_.setText(zipcode);
+       	}   
    }
    
    public void populateSubCategory(String mainCategory) {
@@ -232,16 +240,14 @@ GooglePlayServicesClient.OnConnectionFailedListener
    }
    
    
-   @Override
-   public void onConnected(Bundle dataBundle) {
-       
-	   //if we connected try to get current location
-       Location mCurrentLocation;
-       mCurrentLocation = mLocationClient.getLastLocation();
+ 
+   public String getZipcodeFromLla(double lat, double lon) {
        
        //turn lat/lon into zip
 	   //send request to google map api via http client
-	   HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?latlng="+mCurrentLocation.getLatitude()+","+mCurrentLocation.getLongitude()+"&sensor=false");
+	   HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?latlng="+
+			   lat + "," + lon + "&sensor=false");
+	   
 	   HttpClient client = new DefaultHttpClient();
 	   HttpResponse response;
 	   StringBuilder stringBuilder = new StringBuilder();
@@ -273,80 +279,16 @@ GooglePlayServicesClient.OnConnectionFailedListener
 	              String postalcode = ((JSONArray)((JSONObject)addressArray.get(j)).get("types")).getString(0);
                   if (postalcode.compareTo("postal_code") == 0) {
                 	  zipcode_string = ((JSONObject)addressArray.get(j)).getString("long_name");
-        	          EditText zipcodeEdit_   = (EditText) findViewById(R.id.editZipcode);
-        	          zipcodeEdit_.setText(zipcode_string); 
+//        	          EditText zipcodeEdit_   = (EditText) findViewById(R.id.editZipcode);
+//        	          zipcodeEdit_.setText(zipcode_string); 
                 }
 	          }
 	      }
 	    } catch (JSONException e) {
 	        e.printStackTrace();
 	    }
-   }
-
-   /*
-    * Called by Location Services if the connection to the
-    * location client drops because of an error.
-    */
-   @Override
-   public void onDisconnected() {
-       // Display the connection status
-       Toast.makeText(this, "Disconnected. Please re-connect.",
-               Toast.LENGTH_SHORT).show();
-   }
-
-   /*
-    * Called by Location Services if the attempt to
-    * Location Services fails.
-    */
-   @Override
-   public void onConnectionFailed(ConnectionResult connectionResult) {
-       /*
-        * Google Play services can resolve some errors it detects.
-        * If the error has a resolution, try sending an Intent to
-        * start a Google Play services activity that can resolve
-        * error.
-        */
-       if (connectionResult.hasResolution()) {
-           try {
-               // Start an Activity that tries to resolve the error
-               connectionResult.startResolutionForResult(
-                       this,
-                       CONNECTION_FAILURE_RESOLUTION_REQUEST);
-               /*
-                * Thrown if Google Play services canceled the original
-                * PendingIntent
-                */
-           } catch (IntentSender.SendIntentException e) {
-               // Log the error
-               e.printStackTrace();
-           }
-       } else {
-           /*
-            * If no resolution is available, display a dialog to the
-            * user with the error.
-            */
-           showDialog(connectionResult.getErrorCode());
-       }
-   }
-   
-   /*
-    * Called when the Activity becomes visible.
-    */
-   @Override
-   protected void onStart() {
-       super.onStart();
-       // Connect the client.
-       mLocationClient.connect();
-   }
-  
-   /*
-    * Called when the Activity is no longer visible.
-    */
-   @Override
-   protected void onStop() {
-       // Disconnecting the client invalidates it.
-       mLocationClient.disconnect();
-       super.onStop();
+	   
+	   return zipcode_string;
    }
    
 }
