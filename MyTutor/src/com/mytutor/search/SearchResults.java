@@ -47,10 +47,7 @@ public class SearchResults extends Activity
      
 		   // store the result returned by PHP script that runs MySQL query
 		   String result = response.toString();
-
 		   final ListView resultsView  = (ListView) findViewById(R.id.resultsView);
-		   //ArrayList<String> list = new ArrayList<String>();
-
 		   List<Map> data = new ArrayList<Map>();
               
 		   //parse json array data
@@ -61,6 +58,7 @@ public class SearchResults extends Activity
 				   JSONObject json_data = jArray.getJSONObject(i);
 				   
 				   Map map = new HashMap();
+				   map.put("image", "image ");
 				   float miles = Float.valueOf(json_data.getString("distance") );
 				   map.put("distance", (int)miles + " miles ");
 				   map.put("username", json_data.getString("firstName") + " ");
@@ -70,8 +68,8 @@ public class SearchResults extends Activity
 			   }
 			   
 			   SimpleAdapter adapter = new SimpleAdapter(this, (List<? extends Map<String, ?>>) data,
-			   R.layout.result_item, new String[] { "distance", "username", "rating", "rate" },
-			   new int[] { R.id.distance, R.id.username, R.id.rating, R.id.rate });
+			   R.layout.result_item, new String[] { "image", "distance", "username", "rate", "rating" },
+			   new int[] { R.id.image, R.id.distance, R.id.username, R.id.rate, R.id.rating });
 			   
 			   adapter.setViewBinder(new adapterBinder());
 			   resultsView.setAdapter(adapter);
@@ -96,9 +94,11 @@ public class SearchResults extends Activity
 	            ratingBar.setRating(ratingValue);
 	            return true;
 	        }
+	        else if(view.getId() == R.id.image){ 
+	        	//get image
+	        	return true;
+	        }
 	        return false;
 	    }
-
 	}
-   
 }
