@@ -64,7 +64,7 @@ public class SearchResults extends Activity
 				   float miles = Float.valueOf(json_data.getString("distance") );
 				   map.put("distance", (int)miles + " miles ");
 				   map.put("username", json_data.getString("firstName") + " ");
-				   map.put("rate", "$"+json_data.getString("rate"));
+				   map.put("rate", "$"+json_data.getString("rate")+"/hr ");
 				   map.put("rating", json_data.getString("rating"));
 				   data.add(map);   
 			   }
