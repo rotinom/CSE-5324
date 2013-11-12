@@ -1,8 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
     <item android:id="@+id/action_debug_options" android:title="Debug Options" android:orderInCategory="1">
-        <menu>
-            <item android:id="@+id/action_remove_all_accts" android:title="Remove all accounts stored in local AccountManager"/>
+        <menu><item android:id="@+id/action_remove_all_accts" android:title="Remove all accounts stored in local AccountManager"/>
+            
         </menu>
     </item>
+    <item android:id="@+id/action_edit_profile" android:title="Edit Profile"></item>
 
 </menu>

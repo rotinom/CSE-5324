@@ -54,8 +54,7 @@ public class SearchParams extends Activity
    		try {
    			session_ = ServerSession.getInstance();
    		} catch (Exception e1) {
-   			// TODO Auto-generated catch block
-   			e1.printStackTrace();
+   			// Do nothing
    		}
    		
    		

@@ -23,6 +23,9 @@ public class AuthenticationHelper {
 		accountManager_ = AccountManager.get(context_);
 	}
 	
+	/**
+	 * Removes all AccountManager accounts from the system
+	 */
 	public void remove_all_of_our_accounts(){
 		Account[] accounts = accountManager_.getAccounts();
 		Log.d(log_name, "Found " + accounts.length + " accounts");
@@ -44,20 +47,26 @@ public class AuthenticationHelper {
 	
 	public boolean has_account(){
 		Account[] accounts = accountManager_.getAccounts();
+		Log.d(log_name, "Discovered " + accounts.length + " accounts ");
 		
 		// If we have an account of our type, then return success
 		for(Account account : accounts){
-			if(AuthenticationParams.ACCOUNT_TYPE == account.type){
+			Log.d(log_name, "Found account: " + account);
+			
+			if(account.type.equals(AuthenticationParams.ACCOUNT_TYPE)){
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public String get_token(){
+	public String get_username(){
 		return "";
 	}
 	
+	public String get_password(){
+		return "";
+	}
 	
 	
 }

@@ -2,6 +2,8 @@ package com.mytutor;
 
 
 import com.mytutor.authentication.AuthenticationHelper;
+import com.mytutor.session.ServerSession;
+import com.mytutor.session.Session.SessionStateEnum;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,10 +12,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
 	AuthenticationHelper ah_;
+	ServerSession session_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +25,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         ah_ = new AuthenticationHelper(this);
+        
+        try {
+			session_ = ServerSession.getInstance();
+		} catch (Exception e) {
+			// do nothing
+		}
+        
+        // If we have an account, try to login
+        if(ah_.has_account()){
+        	this.try_login();
+        }
+        
         
         
 //        
@@ -73,7 +89,36 @@ public class MainActivity extends Activity {
     }
 
 
-    @Override
+    private void try_login() {
+
+    	Log.d("MainMenu", "Trying to login");
+    	
+		String username = ah_.get_username();
+		String password = ah_.get_password();
+		
+		Log.d("MainMenu", "Trying username/password: " + username + "/" + password);
+		
+		if(null != session_){
+			SessionStateEnum ret = session_.login(username,  password);
+			Log.d("MainMenu", "session_.login returned: " + ret);
+			
+			// If it didn't turn out ok, just return
+			if(SessionStateEnum.OK != ret){
+				return;
+			}
+			
+			// Alllllright.......  Giggity...  Hide the login/register buttons
+			// and display the profile
+			Button playButton = (Button) findViewById(R.id.main_login_button);
+			playButton.setVisibility(View.INVISIBLE);
+			
+			Button registerButton = (Button) findViewById(R.id.main_register_button);
+			registerButton.setVisibility(View.INVISIBLE);
+		}
+	}
+
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -89,6 +134,11 @@ public class MainActivity extends Activity {
 				Log.d("MainActivity", "Got remove all accounts click event");
 				ah_.remove_all_of_our_accounts();
 				return true;
+				
+		   	case R.id.action_edit_profile:
+		    	Log.d("MainActivity", "Got profile button click event");
+				Intent intent = new Intent(this, ProfileActivity.class);
+				this.startActivity(intent);
 					
 		   	default:
 		   		return super.onOptionsItemSelected(item);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
@@ -74,8 +75,7 @@ implements
 
 	@Override
 	public SessionStateEnum login(String name, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		return SessionStateEnum.OK;
 	}
 
 	@Override
