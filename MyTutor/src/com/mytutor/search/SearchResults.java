@@ -11,17 +11,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mytutor.R;
-
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
+
+import com.mytutor.R;
 
 public class SearchResults extends Activity
 {
@@ -43,7 +43,12 @@ public class SearchResults extends Activity
        // call executeHttpPost method passing necessary parameters 
 	   try {
 		   //send off http request to php script on omega
+	       Time start = new Time();
+	       Time stop = new Time();
+	       start.setToNow();
 		   response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/search.php", postParameters);
+		   stop.setToNow();
+		   Log.d("SearchResults","search.php took: " + (stop.toMillis(true)-start.toMillis(true)) + " milliseconds");
      
 		   // store the result returned by PHP script that runs MySQL query
 		   String result = response.toString();

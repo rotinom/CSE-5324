@@ -21,10 +21,9 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,13 +32,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
 import com.mytutor.R;
-import com.mytutor.search.CustomHttpClient;
 import com.mytutor.session.ServerSession;
 
 
@@ -81,7 +75,13 @@ public class SearchParams extends Activity
        // call executeHttpPost method passing necessary parameters 
 	   try {
 		   //send off http request to php script on omega
-		   response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/mainCategories.php", postParameters);
+           Time start = new Time();
+           Time stop = new Time();
+           start.setToNow();
+           response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/mainCategories.php", postParameters);
+           stop.setToNow();
+           Log.d("SearchResults","mainCategories.php took: " + (stop.toMillis(true)-start.toMillis(true)) + " milliseconds");
+		   
      
 		   // store the result returned by PHP script that runs MySQL query
 		   String result = response.toString();
@@ -142,7 +142,13 @@ public class SearchParams extends Activity
    				   				
    				//turn zip into lat/lon
    		    	//send request to google map api via http client
-   		        HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?address=" + zipcode +"&sensor=false");
+   	           Time start = new Time();
+   	           Time stop = new Time();
+   	           start.setToNow();
+               HttpGet httpGet = new HttpGet("http://maps.google.com/maps/api/geocode/json?address=" + zipcode +"&sensor=false");
+   	           stop.setToNow();
+   	           Log.d("SearchResults","google geocoding took: " + (stop.toMillis(true)-start.toMillis(true)) + " milliseconds");
+
    		        HttpClient client = new DefaultHttpClient();
    		        HttpResponse response;
    		        StringBuilder stringBuilder = new StringBuilder();
