@@ -1,5 +1,6 @@
 package com.mytutor;
 
+import com.mytutor.search.SearchData;
 import com.mytutor.session.ServerSession;
 
 import android.app.Activity;
@@ -39,6 +40,7 @@ public class SplashScreen extends Activity {
         //Protocol.getInstance(this);
         
         ServerSession session = ServerSession.create(this.getApplicationContext());
+        SearchData search = SearchData.create();
 
         Thread welcomeThread = new Thread() {
 

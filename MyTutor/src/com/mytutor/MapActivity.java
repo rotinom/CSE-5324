@@ -9,6 +9,7 @@ import com.mytutor.R.drawable;
 import com.mytutor.R.id;
 import com.mytutor.R.layout;
 import com.mytutor.session.ServerSession;
+import com.mytutor.search.SearchData;
 
 import android.app.Activity;
 import android.content.IntentSender;
@@ -52,7 +53,7 @@ public class MapActivity extends Activity
 			session_ = ServerSession.getInstance();
 	        double lat = session_.getLat();
 	        double lon = session_.getLon();
-	        
+	        	        
 			// Animate the camera and move it to the current location
 			map_.animateCamera(
 				CameraUpdateFactory.newLatLngZoom(
@@ -64,14 +65,27 @@ public class MapActivity extends Activity
 				)
 			);
 			
+			SearchData search = SearchData.getInstance(); 
+			
+			for(int i = 0; i<search.data.size(); i++)
+			{	
+				String name = search.data.get(i).get("username").toString();
+				String rating = search.data.get(i).get("rating").toString(); 
+				String rate = search.data.get(i).get("rate").toString(); 
+				Marker user = map_.addMarker(new MarkerOptions()
+				.position(new LatLng(0, 0))
+				.title(name)
+				.snippet("Rating: " + rating + " Rate/hr: " + rate)
+				.position(new LatLng(lat-(0.001*i), lon-(0.002*i)))
+				 );
+			}
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        
-
-        
-        
+                
         // Set up the custom info window adapter
         map_.setInfoWindowAdapter(new InfoWindowAdapter() {
             
@@ -94,7 +108,6 @@ public class MapActivity extends Activity
                 tvSnippet.setText(marker.getSnippet());
                 
                 ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
-                
                
                 return myContentsView;
             }

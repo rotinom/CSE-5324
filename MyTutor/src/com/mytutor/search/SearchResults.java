@@ -53,6 +53,8 @@ public class SearchResults extends Activity
 		   // store the result returned by PHP script that runs MySQL query
 		   String result = response.toString();
 		   final ListView resultsView  = (ListView) findViewById(R.id.resultsView);
+		   
+		   SearchData search = SearchData.getInstance(); 
 		   List<Map> data = new ArrayList<Map>();
               
 		   //parse json array data
@@ -69,7 +71,10 @@ public class SearchResults extends Activity
 				   map.put("username", json_data.getString("firstName") + " ");
 				   map.put("rate", "$"+json_data.getString("rate")+"/hr ");
 				   map.put("rating", json_data.getString("rating"));
+				   map.put("lat", json_data.getString("lat"));
+				   map.put("lon", json_data.getString("lon"));
 				   data.add(map);   
+				   search.data.add(map);
 			   }
 			   
 			   SimpleAdapter adapter = new SimpleAdapter(this, (List<? extends Map<String, ?>>) data,
