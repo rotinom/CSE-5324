@@ -71,6 +71,8 @@ public class SearchResults extends Activity
 				   map.put("username", json_data.getString("firstName") + " ");
 				   map.put("rate", "$"+json_data.getString("rate")+"/hr ");
 				   map.put("rating", json_data.getString("rating"));
+				   map.put("lat", json_data.getString("lat"));
+				   map.put("lon", json_data.getString("lon"));
 				   data.add(map);   
 				   search.data.add(map);
 			   }
