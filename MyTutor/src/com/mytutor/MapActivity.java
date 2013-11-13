@@ -72,11 +72,17 @@ public class MapActivity extends Activity
 				String name = search.data.get(i).get("username").toString();
 				String rating = search.data.get(i).get("rating").toString(); 
 				String rate = search.data.get(i).get("rate").toString(); 
+				String stringLat = search.data.get(i).get("lat").toString(); 
+				String stringLon =  search.data.get(i).get("lon").toString(); 
+				
+				double markerLat = Double.parseDouble(stringLat);
+				double markerLon = Double.parseDouble(stringLon);
+				
 				Marker user = map_.addMarker(new MarkerOptions()
 				.position(new LatLng(0, 0))
 				.title(name)
 				.snippet("Rating: " + rating + " Rate/hr: " + rate)
-				.position(new LatLng(lat-(0.001*i), lon-(0.002*i)))
+				.position(new LatLng(markerLat, markerLon))
 				 );
 			}
 			
