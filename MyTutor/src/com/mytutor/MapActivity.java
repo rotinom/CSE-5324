@@ -1,19 +1,6 @@
 package com.mytutor;
 
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.model.*;
-import com.mytutor.R;
-import com.mytutor.R.drawable;
-import com.mytutor.R.id;
-import com.mytutor.R.layout;
-import com.mytutor.session.ServerSession;
-import com.mytutor.search.SearchData;
-
 import android.app.Activity;
-import android.content.IntentSender;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +8,16 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mytutor.search.SearchData;
+import com.mytutor.session.ServerSession;
 
 
 public class MapActivity extends Activity
@@ -30,12 +27,22 @@ public class MapActivity extends Activity
 	
 	private ServerSession session_;
 	
+	private int animationTarget_;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-          
+        
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_map);
+        
+        // Get some animation parameters
+        View viewToAnimate = this.findViewById(R.id.ExpandingLinearLayout);
+        animationTarget_ = viewToAnimate.getHeight(); 
+        viewToAnimate.getLayoutParams().height = 0;
+          
+
 
         //Remove notification bar
         this.getWindow().setFlags(
@@ -44,9 +51,12 @@ public class MapActivity extends Activity
 		);
         
         // Set up the map itself
-        setContentView(R.layout.activity_map);     
+        
         map_ = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        
+        // Show our location, but hide the button
         map_.setMyLocationEnabled(true);
+        map_.getUiSettings().setMyLocationButtonEnabled(false);
         
         try {
         	// Get our lat/lon
@@ -119,6 +129,44 @@ public class MapActivity extends Activity
             }
         });
     }
+    
+    public void onClickMyLocation(View view) {
+        Log.d("MapActivity", "Got My Location");
+        
+        // Get our lat/lon
+        double lat = session_.getLat();
+        double lon = session_.getLon();
+                    
+        // Animate the camera and move it to the current location
+        map_.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                new LatLng(
+                    lat, 
+                    lon
+                ), 
+                14.0f
+            )
+        );
+    }
+    
+    boolean expanding_ = false;
+    
+    public void onClickSearchButton(View view) {
+        Log.d("MapActivity", "Got Search Button Click");
+        View viewToAnimate = findViewById(R.id.ExpandingLinearLayout);
+        
+        
+        expanding_ = !expanding_;
+        
+        animationTarget_ = 300;
+        Log.d("MapActivity", "Setting height to: " + animationTarget_);
+        DropDownAnimation dda = new DropDownAnimation(viewToAnimate, animationTarget_, expanding_);
+        dda.setDuration(500);
+        viewToAnimate.startAnimation(dda);
+        
+    }
+    
+    
     
 }
 
