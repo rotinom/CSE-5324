@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -37,10 +39,28 @@ public class MapActivity extends Activity
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_map);
         
-        // Get some animation parameters
-        View viewToAnimate = this.findViewById(R.id.ExpandingLinearLayout);
-        animationTarget_ = viewToAnimate.getHeight(); 
-        viewToAnimate.getLayoutParams().height = 0;
+
+       // Get the target height for the animation target
+       final View tv = findViewById(R.id.ExpandingLinearLayout);
+       final ViewTreeObserver observer = tv.getViewTreeObserver();
+       observer.addOnGlobalLayoutListener(
+           new OnGlobalLayoutListener() {
+               @Override
+               public void onGlobalLayout() {
+                   animationTarget_ = tv.getHeight();
+                   Log.d("MapActivity", "Detected height to be: " + animationTarget_);
+                   tv.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                   // Set the initial height
+                   tv.getLayoutParams().height = 0;
+               }
+           }
+       );
+       
+       
+        
+        
+        
           
 
 
@@ -158,8 +178,8 @@ public class MapActivity extends Activity
         
         expanding_ = !expanding_;
         
-        animationTarget_ = 300;
-        Log.d("MapActivity", "Setting height to: " + animationTarget_);
+//        animationTarget_ = 550;
+//        Log.d("MapActivity", "Setting height to: " + animationTarget_);
         DropDownAnimation dda = new DropDownAnimation(viewToAnimate, animationTarget_, expanding_);
         dda.setDuration(500);
         viewToAnimate.startAnimation(dda);

@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginRight="30dp"
         android:layout_marginTop="19dp"
-        android:alpha="85"
+        android:alpha="100"
+        android:background="@color/black_overlay"
         android:onClick="onClickSearchButton"
         android:src="@drawable/ic_action_search" />
 
@@ -29,6 +30,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="18dp"
         android:layout_marginLeft="21dp"
+        android:background="@color/black_overlay"
         android:onClick="onClickMyLocation"
         android:src="@drawable/ic_action_location_found" />
 
@@ -38,30 +40,16 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/searchButton"
         android:layout_below="@id/searchButton"
+        android:alpha="85"
         android:background="@color/black_overlay"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText2"
+        <include
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName" >
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            layout="@layout/activity_search"
+            android:alpha="85"
+            android:background="@color/black_overlay" />
 
     </LinearLayout>
 

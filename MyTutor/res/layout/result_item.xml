@@ -10,7 +10,7 @@
         android:layout_width="66dp"
         android:layout_height="match_parent"
         android:background="@color/clear"
-        android:src="@drawable/mytutor_icon" />
+        android:src="@drawable/ic_mytutor" />
 
     <GridLayout
         android:layout_width="match_parent"
