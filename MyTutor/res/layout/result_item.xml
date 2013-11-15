@@ -52,13 +52,14 @@
             android:gravity="right" />
 
         <RatingBar
+            style="@style/tutorRatingBar"
             android:id="@+id/rating"
             android:gravity="right"
             android:numStars="5"
             android:stepSize="0.1"
-            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/custom_rating_bar"
             android:isIndicator="true"
             android:minHeight="25dp" 
             />
