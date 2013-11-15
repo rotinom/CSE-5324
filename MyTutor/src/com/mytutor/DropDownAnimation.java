@@ -1,5 +1,6 @@
 package com.mytutor;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -23,6 +24,7 @@ public class DropDownAnimation extends Animation {
         } else {
             newHeight = (int) (targetHeight * (1 - interpolatedTime));
         }
+        Log.d("MapActivity", "interpolatedTime: " + interpolatedTime + " newHeight: " + newHeight);
         view.getLayoutParams().height = newHeight;
         view.requestLayout();
     }

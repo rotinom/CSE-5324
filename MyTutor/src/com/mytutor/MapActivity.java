@@ -182,8 +182,16 @@ public class MapActivity extends Activity
 //        Log.d("MapActivity", "Setting height to: " + animationTarget_);
         DropDownAnimation dda = new DropDownAnimation(viewToAnimate, animationTarget_, expanding_);
         dda.setDuration(500);
-        viewToAnimate.startAnimation(dda);
+        dda.setStartOffset(0);
         
+        
+        Log.d("MapActivity", "Starting animation");
+        viewToAnimate.startAnimation(dda);
+       
+        // Invalidate the parent's view, so that the animation starts
+        // right away
+        View viewToInvalidate = findViewById(R.id.MapRelativeLayout);
+        viewToInvalidate.invalidate();
     }
     
     
