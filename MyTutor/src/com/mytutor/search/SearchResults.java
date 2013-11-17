@@ -1,19 +1,9 @@
 package com.mytutor.search;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,11 +15,11 @@ import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleAdapter.ViewBinder;
+import android.widget.TextView;
 
 import com.mytutor.MapActivity;
 import com.mytutor.R;
@@ -66,7 +56,7 @@ public class SearchResults extends Activity
 		   final ListView resultsView  = (ListView) findViewById(R.id.resultsView);
 		   
 		   SearchData search = SearchData.getInstance(); 
-		   List<Map> data = new ArrayList<Map>();
+		   ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
               
 		   //parse json array data
 		   try{
@@ -74,9 +64,9 @@ public class SearchResults extends Activity
 			   Log.i("log_tag","data: "+ jArray.toString());
 			   for(int i=0;i<jArray.length();i++){
 				   JSONObject json_data = jArray.getJSONObject(i);
-				   
-				   Map map = new HashMap();
-				   map.put("image", "image ");
+				   //Map map = new HashMap();
+				   HashMap<String, String> map = new HashMap<String, String>();
+				   map.put("email", json_data.getString("emailAddress") );
 				   float miles = Float.valueOf(json_data.getString("distance") );
 				   map.put("distance", (int)miles + " miles ");
 				   map.put("username", json_data.getString("firstName") + " ");
@@ -84,16 +74,25 @@ public class SearchResults extends Activity
 				   map.put("rating", json_data.getString("rating"));
 				   map.put("lat", json_data.getString("lat"));
 				   map.put("lon", json_data.getString("lon"));
-				   data.add(map);   
+				   Log.i("SearchResults", "INserting username" + json_data.getString("firstName"));
+				   data.add(map); 
 				   search.data.add(map);
 			   }
 			   
-			   SimpleAdapter adapter = new SimpleAdapter(this, (List<? extends Map<String, ?>>) data,
-			   R.layout.result_item, new String[] { "image", "distance", "username", "rate", "rating" },
-			   new int[] { R.id.image, R.id.distance, R.id.username, R.id.rate, R.id.rating });
-			   
-			   adapter.setViewBinder(new adapterBinder());
+			   // Getting adapter by passing xml data ArrayList
+			   LazyAdapter adapter=new LazyAdapter(this, data);
 			   resultsView.setAdapter(adapter);
+			   
+			   // Click event for single list row
+			   resultsView.setOnItemClickListener(new OnItemClickListener() {
+				   @Override
+				   public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+				      Object listItem = resultsView.getItemAtPosition(position);
+				      TextView username = (TextView)view.findViewById(R.id.username);
+				      Log.i("SearchResults", "Clicked on!! "+ username.getText().toString());
+				      
+				   } 
+				});
 		   }
 		   catch(JSONException e){
 			   Log.e("log_tag", "Error parsing data "+e.toString());
@@ -120,22 +119,4 @@ public class SearchResults extends Activity
 		); 	   
    } 
    
-   //special adapter for the rating bar
-   class adapterBinder implements ViewBinder{
-	    @Override
-	    public boolean setViewValue(View view, Object data, String textRepresentation) {
-	        if(view.getId() == R.id.rating){
-	            String stringval = (String) data;
-	            float ratingValue = Float.parseFloat(stringval);
-	            RatingBar ratingBar = (RatingBar) view;
-	            ratingBar.setRating(ratingValue);
-	            return true;
-	        }
-	        else if(view.getId() == R.id.image){ 
-	        	//get image
-	        	return true;
-	        }
-	        return false;
-	    }
-	}
 }
