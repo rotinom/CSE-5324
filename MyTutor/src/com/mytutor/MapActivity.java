@@ -59,7 +59,9 @@ public class MapActivity extends Activity
        
        
         
-        
+//    // Hide the keyboard
+//       getWindow().setSoftInputMode(
+//           WindowManager.LayoutParams.soft_input);
         
           
 
@@ -169,6 +171,48 @@ public class MapActivity extends Activity
         );
     }
     
+//    
+//    boolean keyboardShown_ = false;
+//    AnimationListener keyboardHider = new AnimationListener() {
+//        // ...
+//        @Override
+//        public void onAnimationEnd(Animation anim) {
+//            Log.d("MapActivity", "Animation Ended");
+//            if(keyboardShown_) {
+//                Log.d("MapActivity", "Hiding keyboard");
+//                
+////                // Hide the keyboard
+////                getWindow().setSoftInputMode(
+////                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//                
+//                InputMethodManager imm = 
+//                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(findViewById(android.R.id.content).getWindowToken() , 0);
+//            }
+//            else {
+//                Log.d("MapActivity", "Showing keyboard");
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+////                InputMethodManager imm = 
+////                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//////                imm.showSoftInput(view, flags, new ResultReader(Ö))
+////                    imm.showSoftInputFromInputMethod(findViewById(android.R.id.content), 0);
+//                    
+//                    
+//            }
+//            keyboardShown_ = !keyboardShown_;
+//        }
+//
+//        @Override
+//        public void onAnimationRepeat(Animation arg0) {
+//        }
+//
+//        @Override
+//        public void onAnimationStart(Animation arg0) {
+//        }
+//
+//      };
+    
+    
     boolean expanding_ = false;
     
     public void onClickSearchButton(View view) {
@@ -183,6 +227,8 @@ public class MapActivity extends Activity
         DropDownAnimation dda = new DropDownAnimation(viewToAnimate, animationTarget_, expanding_);
         dda.setDuration(500);
         dda.setStartOffset(0);
+//        dda.setAnimationListener(keyboardHider);
+        
         
         
         Log.d("MapActivity", "Starting animation");
