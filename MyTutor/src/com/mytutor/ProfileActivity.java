@@ -66,6 +66,8 @@ public class ProfileActivity extends Activity {
         int height = photo_.getHeight();
         int width  = photo_.getWidth();
         
+        // Figure out the longest dimension (height or width)
+        // and scale it accordingly
         int newHeight;
         int newWidth;
         if(height > width) {
@@ -77,10 +79,10 @@ public class ProfileActivity extends Activity {
             newWidth = profileButton.getMeasuredWidth();
             newHeight = (int)((double)newWidth * ((double)height / (double)width));
         }
+        
+        // Save to a member variable, because I can't figure out how to suck the 
+        // image out of the button in onSaveInstanceState
         photo_ = Bitmap.createScaledBitmap(photo_, newWidth, newHeight, false);
-        
-        
-        
         profileButton.setImageBitmap(photo_);
     }
     
