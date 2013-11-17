@@ -8,14 +8,15 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mytutor.search.SearchData;
@@ -58,8 +59,14 @@ public class MapActivity extends Activity
        );
        
        
+       
+
+       
+       
         
-        
+//    // Hide the keyboard
+//       getWindow().setSoftInputMode(
+//           WindowManager.LayoutParams.soft_input);
         
           
 
@@ -81,22 +88,19 @@ public class MapActivity extends Activity
         try {
         	// Get our lat/lon
 			session_ = ServerSession.getInstance();
-	        double lat = session_.getLat();
-	        double lon = session_.getLon();
-	        	        
-			// Animate the camera and move it to the current location
-			map_.animateCamera(
-				CameraUpdateFactory.newLatLngZoom(
-					new LatLng(
-						lat, 
-						lon
-					), 
-					14.0f
-				)
-			);
+			LatLng currentPos = new LatLng(session_.getLat(), session_.getLon());
 			
+			
+			// Build a LatLngBounds for all of the pins we will create, and include
+			// our current position
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(currentPos);
+            
+			
+			// Get the search results
+			//
+			// TODO This should be bundled....
 			SearchData search = SearchData.getInstance(); 
-			
 			for(int i = 0; i<search.data.size(); i++)
 			{	
 				String name = search.data.get(i).get("username").toString();
@@ -108,13 +112,37 @@ public class MapActivity extends Activity
 				double markerLat = Double.parseDouble(stringLat);
 				double markerLon = Double.parseDouble(stringLon);
 				
-				Marker user = map_.addMarker(new MarkerOptions()
-				.position(new LatLng(0, 0))
-				.title(name)
-				.snippet("Rating: " + rating + " Rate/hr: " + rate)
-				.position(new LatLng(markerLat, markerLon))
+				
+				LatLng pos = new LatLng(markerLat, markerLon);
+				Marker user = map_.addMarker(
+			        new MarkerOptions()
+        				.position(pos)
+        				.title(name)
+        				.snippet("Rating: " + rating + " Rate/hr: " + rate)
 				 );
+				
+				// Add the position to our builder
+				builder.include(pos);
 			}
+			
+			// Build the bounding box with the appropriate pixel margin
+			final int MAP_MARGIN_IN_PIXELS =  250;
+			LatLngBounds bounds = builder.build();
+			final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, MAP_MARGIN_IN_PIXELS);
+
+			
+			
+	       // Set the zoom after the map has been laid out
+	       final View map_view = findViewById(R.id.map);
+	       final ViewTreeObserver map_observer = map_view.getViewTreeObserver();
+	       map_observer.addOnGlobalLayoutListener(
+	           new OnGlobalLayoutListener() {
+	               @Override
+	               public void onGlobalLayout() {
+	                   map_.moveCamera(cu);
+	               }
+	           }
+	       );
 			
 			
 		} catch (Exception e) {
@@ -169,6 +197,48 @@ public class MapActivity extends Activity
         );
     }
     
+//    
+//    boolean keyboardShown_ = false;
+//    AnimationListener keyboardHider = new AnimationListener() {
+//        // ...
+//        @Override
+//        public void onAnimationEnd(Animation anim) {
+//            Log.d("MapActivity", "Animation Ended");
+//            if(keyboardShown_) {
+//                Log.d("MapActivity", "Hiding keyboard");
+//                
+////                // Hide the keyboard
+////                getWindow().setSoftInputMode(
+////                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+//                
+//                InputMethodManager imm = 
+//                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(findViewById(android.R.id.content).getWindowToken() , 0);
+//            }
+//            else {
+//                Log.d("MapActivity", "Showing keyboard");
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+////                InputMethodManager imm = 
+////                        (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//////                imm.showSoftInput(view, flags, new ResultReader(Ö))
+////                    imm.showSoftInputFromInputMethod(findViewById(android.R.id.content), 0);
+//                    
+//                    
+//            }
+//            keyboardShown_ = !keyboardShown_;
+//        }
+//
+//        @Override
+//        public void onAnimationRepeat(Animation arg0) {
+//        }
+//
+//        @Override
+//        public void onAnimationStart(Animation arg0) {
+//        }
+//
+//      };
+    
+    
     boolean expanding_ = false;
     
     public void onClickSearchButton(View view) {
@@ -183,6 +253,8 @@ public class MapActivity extends Activity
         DropDownAnimation dda = new DropDownAnimation(viewToAnimate, animationTarget_, expanding_);
         dda.setDuration(500);
         dda.setStartOffset(0);
+//        dda.setAnimationListener(keyboardHider);
+        
         
         
         Log.d("MapActivity", "Starting animation");

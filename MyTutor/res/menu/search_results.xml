@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/action_show_results_in_map" 
+          android:icon="@drawable/ic_action_map" 
+          android:titleCondensed="Map" 
+          android:enabled="true" 
+          android:visible="true" 
+          android:title="Show Map" 
+          android:showAsAction="always"/><item android:id="@+id/action_home" 
+          android:icon="@drawable/ic_menu_home" 
+          android:titleCondensed="Home" 
+          android:enabled="true" 
+          android:visible="true" 
+          android:title="Go To Home Screen" 
+          android:showAsAction="always"/>
+ 	
+    
+
+</menu>
