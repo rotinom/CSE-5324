@@ -8,14 +8,15 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mytutor.search.SearchData;
@@ -58,6 +59,10 @@ public class MapActivity extends Activity
        );
        
        
+       
+
+       
+       
         
 //    // Hide the keyboard
 //       getWindow().setSoftInputMode(
@@ -83,22 +88,19 @@ public class MapActivity extends Activity
         try {
         	// Get our lat/lon
 			session_ = ServerSession.getInstance();
-	        double lat = session_.getLat();
-	        double lon = session_.getLon();
-	        	        
-			// Animate the camera and move it to the current location
-			map_.animateCamera(
-				CameraUpdateFactory.newLatLngZoom(
-					new LatLng(
-						lat, 
-						lon
-					), 
-					14.0f
-				)
-			);
+			LatLng currentPos = new LatLng(session_.getLat(), session_.getLon());
 			
+			
+			// Build a LatLngBounds for all of the pins we will create, and include
+			// our current position
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            builder.include(currentPos);
+            
+			
+			// Get the search results
+			//
+			// TODO This should be bundled....
 			SearchData search = SearchData.getInstance(); 
-			
 			for(int i = 0; i<search.data.size(); i++)
 			{	
 				String name = search.data.get(i).get("username").toString();
@@ -110,13 +112,37 @@ public class MapActivity extends Activity
 				double markerLat = Double.parseDouble(stringLat);
 				double markerLon = Double.parseDouble(stringLon);
 				
-				Marker user = map_.addMarker(new MarkerOptions()
-				.position(new LatLng(0, 0))
-				.title(name)
-				.snippet("Rating: " + rating + " Rate/hr: " + rate)
-				.position(new LatLng(markerLat, markerLon))
+				
+				LatLng pos = new LatLng(markerLat, markerLon);
+				Marker user = map_.addMarker(
+			        new MarkerOptions()
+        				.position(pos)
+        				.title(name)
+        				.snippet("Rating: " + rating + " Rate/hr: " + rate)
 				 );
+				
+				// Add the position to our builder
+				builder.include(pos);
 			}
+			
+			// Build the bounding box with the appropriate pixel margin
+			final int MAP_MARGIN_IN_PIXELS =  250;
+			LatLngBounds bounds = builder.build();
+			final CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, MAP_MARGIN_IN_PIXELS);
+
+			
+			
+	       // Set the zoom after the map has been laid out
+	       final View map_view = findViewById(R.id.map);
+	       final ViewTreeObserver map_observer = map_view.getViewTreeObserver();
+	       map_observer.addOnGlobalLayoutListener(
+	           new OnGlobalLayoutListener() {
+	               @Override
+	               public void onGlobalLayout() {
+	                   map_.moveCamera(cu);
+	               }
+	           }
+	       );
 			
 			
 		} catch (Exception e) {
