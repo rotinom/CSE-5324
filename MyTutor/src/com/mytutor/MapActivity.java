@@ -143,7 +143,7 @@ public class MapActivity extends Activity
                 TextView tvSnippet = ((TextView)myContentsView.findViewById(R.id.snippet));
                 tvSnippet.setText(marker.getSnippet());
                 
-                ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
+              //  ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
                
                 return myContentsView;
             }

@@ -4,45 +4,17 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/ImageView04"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/star" />
-
-    <ImageView
-        android:id="@+id/ImageView03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/star" />
-
-    <ImageView
-        android:id="@+id/ImageView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/star" />
-
-    <ImageView
-        android:id="@+id/ImageView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/star" />
-
-   <ImageView
-       android:id="@+id/imgStar"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginRight="5dp"
-       android:adjustViewBounds="true"
-       android:src="@drawable/star"/>
+    <RatingBar
+            style="@style/tutorRatingBar"
+            android:id="@+id/rating"
+            android:gravity="right"
+            android:numStars="5"
+            android:stepSize="0.1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/custom_rating_bar"
+            android:isIndicator="true"
+            android:minHeight="25dp" />
    <TextView
        android:id="@+id/title"
        android:layout_width="wrap_content"

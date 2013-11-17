@@ -1,26 +1,37 @@
 package com.mytutor.search;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleAdapter.ViewBinder;
 
+import com.mytutor.MapActivity;
 import com.mytutor.R;
 
 public class SearchResults extends Activity
@@ -91,7 +102,23 @@ public class SearchResults extends Activity
 	   catch (Exception e) {
 		   Log.e("log_tag","Error in http connection!!" + e.toString());     
 	   }
-   }
+	   
+	   
+	   
+	// Set up handler for the profile button on the bottom of the activity
+       final Button searchButton = (Button) findViewById(R.id.btnMapButton);
+
+       searchButton.setOnClickListener(
+   		  new View.OnClickListener()
+   		  {
+   			public void onClick(View view)
+   			{
+   				Intent intent = new Intent(view.getContext(), MapActivity.class);
+   				view.getContext().startActivity(intent);
+   			}
+   		  }
+		); 	   
+   } 
    
    //special adapter for the rating bar
    class adapterBinder implements ViewBinder{
