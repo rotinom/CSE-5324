@@ -17,12 +17,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-<<<<<<< HEAD
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-=======
->>>>>>> 464bf38442d1d1f34c1b006b8e89ceefae0fd344
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -107,29 +104,8 @@ public class SearchResults extends Activity
 		   Log.e("log_tag","Error in http connection!!" + e.toString());     
 	   }	   
    } 
-   
-<<<<<<< HEAD
-=======
-   //special adapter for the rating bar
-   class adapterBinder implements ViewBinder{
-	    @Override
-	    public boolean setViewValue(View view, Object data, String textRepresentation) {
-	        if(view.getId() == R.id.rating){
-	            String stringval = (String) data;
-	            float ratingValue = Float.parseFloat(stringval);
-	            RatingBar ratingBar = (RatingBar) view;
-	            ratingBar.setRating(ratingValue);
-	            return true;
-	        }
-	        else if(view.getId() == R.id.image){ 
-	        	//get image
-	        	return true;
-	        }
-	        return false;
-	    }
-	}
-   
-   
+
+ 
    // Create a menu
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,5 +131,4 @@ public class SearchResults extends Activity
        }
    }
    
->>>>>>> 464bf38442d1d1f34c1b006b8e89ceefae0fd344
 }
