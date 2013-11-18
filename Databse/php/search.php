@@ -20,7 +20,7 @@ $lon=$_POST['lon'];
 $dbConnection = mysql_connect("localhost", $dbUser, $dbPass) or die ('cannot connect to SQL databse');
 mysql_select_db($dbName);
 
-$sqlQuery ="SELECT users.firstName, tutors.rate, tutors.rating, tutors.picture, tutors.premium, (3959*acos(cos(radians('".$lat."'))*cos(radians(tutors.lat))*cos(radians(tutors.lon)-radians('".$lon."'))+sin(radians('".$lat."'))*sin(radians(tutors.lat)))) AS distance 
+$sqlQuery ="SELECT users.firstName, users.lastName, users.emailAddress, tutors.rate, tutors.rating, tutors.profile, tutors.schedule, tutors.premium, tutors.lat, tutors.lon, (3959*acos(cos(radians('".$lat."'))*cos(radians(tutors.lat))*cos(radians(tutors.lon)-radians('".$lon."'))+sin(radians('".$lat."'))*sin(radians(tutors.lat)))) AS distance 
 FROM tutors 
 INNER JOIN subCatToTutor ON tutors.tutorId=subCatToTutor.tutorId 
 INNER JOIN users ON tutors.userId=users.userId
