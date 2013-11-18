@@ -105,6 +105,12 @@
             android:label="@string/title_activity_results" >
         </activity>
         
+        <!-- Search Results Profile activity -->
+        <activity
+            android:name="com.mytutor.search.ViewProfile"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        
         <!-- Search Results activity -->
         <activity
             android:name="com.mytutor.authentication.AuthenticatorActivity"

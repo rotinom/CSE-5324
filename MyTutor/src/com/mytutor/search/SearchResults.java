@@ -65,17 +65,18 @@ public class SearchResults extends Activity
 			   Log.i("log_tag","data: "+ jArray.toString());
 			   for(int i=0;i<jArray.length();i++){
 				   JSONObject json_data = jArray.getJSONObject(i);
-				   //Map map = new HashMap();
 				   HashMap<String, String> map = new HashMap<String, String>();
 				   map.put("email", json_data.getString("emailAddress") );
 				   float miles = Float.valueOf(json_data.getString("distance") );
 				   map.put("distance", (int)miles + " miles ");
 				   map.put("username", json_data.getString("firstName") + " ");
+				   map.put("lastname", json_data.getString("lastName") + " ");
 				   map.put("rate", "$"+json_data.getString("rate")+"/hr ");
 				   map.put("rating", json_data.getString("rating"));
 				   map.put("lat", json_data.getString("lat"));
 				   map.put("lon", json_data.getString("lon"));
-				   Log.i("SearchResults", "INserting username" + json_data.getString("firstName"));
+				   map.put("schedule", json_data.getString("schedule"));
+				   map.put("profile", json_data.getString("profile"));
 				   data.add(map); 
 				   search.data.add(map);
 			   }
@@ -89,9 +90,33 @@ public class SearchResults extends Activity
 				   @Override
 				   public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
 				      Object listItem = resultsView.getItemAtPosition(position);
-				      TextView username = (TextView)view.findViewById(R.id.username);
-				      Log.i("SearchResults", "Clicked on!! "+ username.getText().toString());
-				      
+				      try{
+				          for(int i=0; i<SearchData.getInstance().data.size(); i++)
+				          {
+				    	      HashMap<String, String> item = (HashMap<String, String>)SearchData.getInstance().data.get(i);
+				    	      TextView emailView = (TextView)view.findViewById(R.id.email);
+				    	      String emailString = emailView.getText().toString();
+				    	      if(emailString == item.get("email"))
+				    	      {
+				    	    	  Log.i("SearchResults", "iterate email:"+item.get("email"));
+				    	    	  //populate intent with user data and launch results
+
+							      Intent intent = new Intent(SearchResults.this, com.mytutor.search.ViewProfile.class);
+				   	   		      intent.putExtra("username",item.get("username"));
+				   	   		      intent.putExtra("lastname",item.get("lastname"));
+				   	   		      intent.putExtra("rate",item.get("rate"));
+				   	   		      intent.putExtra("rating",item.get("rating"));
+				   	   		      intent.putExtra("schedule",item.get("schedule"));
+				   	   		      intent.putExtra("profile",item.get("profile"));
+				   	   		      intent.putExtra("email",item.get("email"));
+							      startActivity(intent);
+				    	      }
+				    	  
+				          }
+				      }catch (Exception e) {
+						   Log.e("log_tag","Cannot find data entry for item selection" + e.toString());     
+					   }
+ 
 				   } 
 				});
 		   }
