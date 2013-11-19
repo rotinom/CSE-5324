@@ -56,7 +56,10 @@ public class SearchResults extends Activity
 		   String result = response.toString();
 		   final ListView resultsView  = (ListView) findViewById(R.id.resultsView);
 		   
+		   // Get the search data, and clear out the old
 		   SearchData search = SearchData.getInstance(); 
+		   search.data.clear();
+		   
 		   ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
               
 		   //parse json array data

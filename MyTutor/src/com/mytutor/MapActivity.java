@@ -92,7 +92,7 @@ public class MapActivity extends Activity
         
         try {
         	// Get our lat/lon
-			session_ = ServerSession.getInstance();
+			session_ = ServerSession.create();
 			LatLng currentPos = new LatLng(session_.getLat(), session_.getLon());
 			
 			

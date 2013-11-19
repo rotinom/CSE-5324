@@ -1,4 +1,4 @@
-package com.mytutor;
+package com.mytutor.profile;
 
 import java.io.ByteArrayOutputStream;
 
@@ -101,4 +101,5 @@ public class Profile {
     public void deserialize(String data) {
         
     }
+    
 }

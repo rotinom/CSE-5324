@@ -1,6 +1,8 @@
-package com.mytutor;
+package com.mytutor.profile;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,6 +15,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
+
+import com.mytutor.R;
 
 public class ProfileActivity extends Activity {
 
@@ -28,6 +33,21 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        
+        ListView lv = (ListView)findViewById(R.id.categoryListView);
+        HashMap<String, String> datamap = new HashMap<String, String>();
+        datamap.put("main", "main1");
+        datamap.put("subcategory", "sub1");
+        
+        ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+        
+        for(int i = 0; i < 25; i += 1) {
+            data.add(datamap);
+        }
+        
+        
+        lv.setAdapter(new ProfileCategoryAdapter(this, data)); 
+
     }
 
     @Override

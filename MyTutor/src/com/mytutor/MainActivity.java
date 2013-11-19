@@ -1,19 +1,19 @@
 package com.mytutor;
 
 
-import com.mytutor.authentication.AuthenticationHelper;
-import com.mytutor.session.ServerSession;
-import com.mytutor.session.Session.SessionStateEnum;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+
+import com.mytutor.authentication.AuthenticationHelper;
+import com.mytutor.profile.ProfileActivity;
+import com.mytutor.session.ServerSession;
+import com.mytutor.session.Session.SessionStateEnum;
 
 public class MainActivity extends Activity {
 	AuthenticationHelper ah_;
@@ -22,12 +22,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
         setContentView(R.layout.activity_main);
         
         ah_ = new AuthenticationHelper(this);
         
         try {
-			session_ = ServerSession.getInstance();
+			session_ = ServerSession.create();
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -112,8 +113,8 @@ public class MainActivity extends Activity {
 			Button playButton = (Button) findViewById(R.id.main_login_button);
 			playButton.setVisibility(View.INVISIBLE);
 			
-			Button registerButton = (Button) findViewById(R.id.main_register_button);
-			registerButton.setVisibility(View.INVISIBLE);
+			//Button registerButton = (Button) findViewById(R.id.main_register_button);
+			//registerButton.setVisibility(View.INVISIBLE);
 		}
 	}
 

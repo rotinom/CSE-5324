@@ -40,13 +40,13 @@ import com.mytutor.session.ServerSession;
 public class SearchParams extends Activity 
 {
    private Map<String,String> subCatLookup_;
-   ServerSession session_;
+   private ServerSession session_;
  
    	@Override
    	protected void onCreate(Bundle savedInstanceState) 
    	{
    		try {
-   			session_ = ServerSession.getInstance();
+   			session_ = ServerSession.create();
    		} catch (Exception e1) {
    			// Do nothing
    		}
@@ -66,66 +66,31 @@ public class SearchParams extends Activity
 	   final Spinner radiusSpinner_  = (Spinner)  findViewById(R.id.searchRadius);
 	   final EditText zipcodeEdit_   = (EditText) findViewById(R.id.editZipcode);
 
-	   //create empty post parameters for php request
-	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-	   String response;
+        // Get the list of the main categories
+        List<String> mainCategories = session_.getMainCategories();
+        
+        //populate spinner for main categories
+        ArrayAdapter<String> adp1 = 
+            new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainCategories);
+        
+        adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mainCatSpinner_.setAdapter(adp1);
+        
+        //set up listener to handle main category selection (to populate sub-category spinner)
+        mainCatSpinner_.setOnItemSelectedListener(new OnItemSelectedListener() 
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                populateSubCategory(mainCatSpinner_.getItemAtPosition(position).toString());
+            }
+            
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
 	   
 	   
-          
-       // call executeHttpPost method passing necessary parameters 
-	   try {
-		   //send off http request to php script on omega
-           Time start = new Time();
-           Time stop = new Time();
-           start.setToNow();
-           response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/mainCategories.php", postParameters);
-           stop.setToNow();
-           Log.d("SearchResults","mainCategories.php took: " + (stop.toMillis(true)-start.toMillis(true)) + " milliseconds");
-		   
-     
-		   // store the result returned by PHP script that runs MySQL query
-		   String result = response.toString();
-		   //Log.e("log_tag", "DB Result "+ result);
-		   List<String> mainCategories = new ArrayList<String>();
-              
-		   //parse json array data
-		   try{
-			   JSONArray jArray = new JSONArray(result);
-			   for(int i=0;i<jArray.length();i++){
-				   JSONObject json_data = jArray.getJSONObject(i);
-				   //Log.i("log_tag","name: "+json_data.getString("name"));
-				   //Get an output to the screen
-				   mainCategories.add(json_data.getString("name")); //save to string list
-			   }
-
-			   //populate spinner for main categories
-			   ArrayAdapter<String> adp1=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,mainCategories);
-			   adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			   mainCatSpinner_.setAdapter(adp1);	
-			   //set up listener to handle main category selection (to populate sub-category spinner)
-			   mainCatSpinner_.setOnItemSelectedListener(new OnItemSelectedListener() 
-			   {
-			       @Override
-			       public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) 
-			       {
-			    	   populateSubCategory(mainCatSpinner_.getItemAtPosition(position).toString());
-			       }
-
-			       @Override
-			       public void onNothingSelected(AdapterView<?> parentView) 
-			       {}
-			   });
-			   
-		   }
-		   catch(JSONException e){
-			   Log.e("log_tag", "Error parsing data "+e.toString());
-		   }        
-	   }
-	   catch (Exception e) {
-		   Log.e("log_tag","Error in http connection!!" + e.toString());     
-	   }
 	   
-       // Set up handler for the profile button on the bottom of the activity
+       // Set up handler for the submit button on the bottom of the activity
        final Button searchButton = (Button) findViewById(R.id.btnSubmit);
 
        searchButton.setOnClickListener(
@@ -203,50 +168,32 @@ public class SearchParams extends Activity
    }
    
    public void populateSubCategory(String mainCategory) {
-
-	   final Spinner subCatSpinner_  = (Spinner)  findViewById(R.id.subCatSpinner);
+	   
 	   //populate post parameter with main category selection
 	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 	   postParameters.add(new BasicNameValuePair("category", mainCategory));
 	   
-	   String response = null;
+	   // Populate the map
 	   subCatLookup_.clear();
+	   subCatLookup_ = session_.getSubCategories(mainCategory);
+	   
+	   // Get the keys as a list
+	   List<String> keys = new ArrayList<String>(subCatLookup_.keySet());
+	   
+	   // Populate the listview
+	   ArrayAdapter<String> adp1 = 
+               new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, keys);
+	   adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       final Spinner subCatSpinner_ = (Spinner)  findViewById(R.id.subCatSpinner);
+       subCatSpinner_.setAdapter(adp1);
           
-	   //send off http request to php script on omega
-	   try {
-		   response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/subCategories.php", postParameters);
-     
-		   // store the result returned by PHP script that runs MySQL query
-		   String result = response.toString();
-		   //Log.e("log_tag", "DB Result "+ result);
-		   List<String> mainCategories = new ArrayList<String>();
-              
-		   //parse request for sub categories
-		   try{
-			   JSONArray jArray = new JSONArray(result);
-			   for(int i=0;i<jArray.length();i++){
-				   JSONObject json_data = jArray.getJSONObject(i);
-				   //Log.i("log_tag","name: "+json_data.getString("name"));
-				   //Get an output to the screen
-				   mainCategories.add(json_data.getString("name"));
-				   subCatLookup_.put(json_data.getString("name"), json_data.getString("categoryId"));
-			   }
-			   ArrayAdapter<String> adp1=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,mainCategories);
-			   adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			   subCatSpinner_.setAdapter(adp1);			   
-		   }
-		   catch(JSONException e){
-			   Log.e("log_tag", "Error parsing data "+e.toString());
-		   }
-	   }
-	   catch (Exception e) {
-		   Log.e("log_tag","Error in http connection!!" + e.toString());     
-	   }   
    }
    
    
+  
+   
  
-   public String getZipcodeFromLla(double lat, double lon) {
+   public static String getZipcodeFromLla(double lat, double lon) {
        
        //turn lat/lon into zip
 	   //send request to google map api via http client
