@@ -8,6 +8,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,6 +16,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -32,6 +35,8 @@ public class MapActivity extends Activity
 	
 	private int animationTarget_;
 	
+	private RatingBar ratingBar; 
+		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,9 +123,10 @@ public class MapActivity extends Activity
 			        new MarkerOptions()
         				.position(pos)
         				.title(name)
-        				.snippet("Rating: " + rating + " Rate/hr: " + rate)
+        				.snippet("Rating: " + rating + " Rate: " + rate)
+        				.icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker))
 				 );
-				
+								
 				// Add the position to our builder
 				builder.include(pos);
 			}
@@ -165,13 +171,23 @@ public class MapActivity extends Activity
             {
                 View myContentsView = getLayoutInflater().inflate(R.layout.activity_map_infowindow, null);
                 
+                //Split the snippet string on the space character and store the results into an array.
+                String[] snippets = marker.getSnippet().split(" ");    
+                
                 TextView tvTitle = ((TextView)myContentsView.findViewById(R.id.title));
                 tvTitle.setText(marker.getTitle());
                 
+                // Log.d("Rate: " , snippets[2]);
+                // Log.d("Rate Csot: " , snippets[3]); 
                 TextView tvSnippet = ((TextView)myContentsView.findViewById(R.id.snippet));
-                tvSnippet.setText(marker.getSnippet());
+                tvSnippet.setText(snippets[2] + " " + snippets[3]);
+
+                // Set the rating for the rating bar.
+                // Log.d("Rating: " , snippets[1]);  
+                ratingBar = (RatingBar)myContentsView.findViewById(R.id.tutorRatingMap);
+                ratingBar.setRating(Float.parseFloat(snippets[1])); 
                 
-              //  ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
+             	//  ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
                
                 return myContentsView;
             }
