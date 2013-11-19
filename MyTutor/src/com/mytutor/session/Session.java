@@ -1,5 +1,7 @@
 package com.mytutor.session;
 
+import android.widget.ImageView;
+
 import com.mytutor.search.SearchParams;
 
 public interface Session {
@@ -79,6 +81,8 @@ public interface Session {
 	 */
 	SessionStateEnum search(SearchParams[] params);
 	
+	
+	public void getProfilePicAsync(String email, ImageView dest);
 	
 	
 }

@@ -1,19 +1,18 @@
 package com.mytutor;
 
 
-import com.mytutor.authentication.AuthenticationHelper;
-import com.mytutor.session.ServerSession;
-import com.mytutor.session.Session.SessionStateEnum;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+
+import com.mytutor.authentication.AuthenticationHelper;
+import com.mytutor.session.ServerSession;
+import com.mytutor.session.Session.SessionStateEnum;
 
 public class MainActivity extends Activity {
 	AuthenticationHelper ah_;
@@ -27,7 +26,7 @@ public class MainActivity extends Activity {
         ah_ = new AuthenticationHelper(this);
         
         try {
-			session_ = ServerSession.getInstance();
+			session_ = ServerSession.create();
 		} catch (Exception e) {
 			// do nothing
 		}
