@@ -75,7 +75,7 @@
 
         <!-- Profile activity -->
         <activity
-            android:name="com.mytutor.ProfileActivity"
+            android:name="com.mytutor.profile.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
 

@@ -1,4 +1,4 @@
-package com.mytutor;
+package com.mytutor.profile;
 
 import java.io.ByteArrayOutputStream;
 

@@ -1,6 +1,11 @@
-package com.mytutor;
+package com.mytutor.profile;
 
 import java.io.ByteArrayOutputStream;
+
+import com.mytutor.R;
+import com.mytutor.R.id;
+import com.mytutor.R.layout;
+import com.mytutor.R.menu;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +17,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 public class ProfileActivity extends Activity {
 
@@ -28,6 +35,11 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        
+        ListView lv = (ListView)findViewById(R.id.categoryListView);
+        String[] statesList = {"listItem 1", "listItem 2", "listItem 3"};
+        lv.setAdapter(new ArrayAdapter<String>(this, R.layout.category_item, statesList)); 
+
     }
 
     @Override

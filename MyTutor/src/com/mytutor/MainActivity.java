@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.mytutor.authentication.AuthenticationHelper;
+import com.mytutor.profile.ProfileActivity;
 import com.mytutor.session.ServerSession;
 import com.mytutor.session.Session.SessionStateEnum;
 
