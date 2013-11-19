@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 
 public class MainActivity extends Activity {
 	AuthenticationHelper ah_;
@@ -22,6 +21,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
         setContentView(R.layout.activity_main);
         
         ah_ = new AuthenticationHelper(this);
@@ -112,8 +112,8 @@ public class MainActivity extends Activity {
 			Button playButton = (Button) findViewById(R.id.main_login_button);
 			playButton.setVisibility(View.INVISIBLE);
 			
-			Button registerButton = (Button) findViewById(R.id.main_register_button);
-			registerButton.setVisibility(View.INVISIBLE);
+			//Button registerButton = (Button) findViewById(R.id.main_register_button);
+			//registerButton.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     
