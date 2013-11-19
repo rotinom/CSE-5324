@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.activityfadein, R.anim.splashfadeout);
         setContentView(R.layout.activity_main);
         
         ah_ = new AuthenticationHelper(this);
@@ -112,8 +113,8 @@ public class MainActivity extends Activity {
 			Button playButton = (Button) findViewById(R.id.main_login_button);
 			playButton.setVisibility(View.INVISIBLE);
 			
-			Button registerButton = (Button) findViewById(R.id.main_register_button);
-			registerButton.setVisibility(View.INVISIBLE);
+			//Button registerButton = (Button) findViewById(R.id.main_register_button);
+			//registerButton.setVisibility(View.INVISIBLE);
 		}
 	}
 
