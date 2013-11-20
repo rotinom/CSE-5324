@@ -1,8 +1,8 @@
 <?php
 require_once 'dbinfo.php';
 
-//$email=$_POST['email'];
-$email="sean.crane@mavs.uta.edu";
+$email=$_POST['email'];
+//$email="sean.crane@mavs.uta.edu";
 
 $dbConnection = mysql_connect("localhost", $dbUser, $dbPass) or die ('cannot connect to SQL databse');
 mysql_select_db($dbName);
