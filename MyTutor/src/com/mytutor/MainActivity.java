@@ -8,12 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.mytutor.authentication.AuthenticationHelper;
 import com.mytutor.profile.ProfileActivity;
 import com.mytutor.session.ServerSession;
-import com.mytutor.session.Session.SessionStateEnum;
 
 public class MainActivity extends Activity {
 	AuthenticationHelper ah_;
@@ -99,23 +97,7 @@ public class MainActivity extends Activity {
 		
 		Log.d("MainMenu", "Trying username/password: " + username + "/" + password);
 		
-		if(null != session_){
-			SessionStateEnum ret = session_.login(username,  password);
-			Log.d("MainMenu", "session_.login returned: " + ret);
-			
-			// If it didn't turn out ok, just return
-			if(SessionStateEnum.OK != ret){
-				return;
-			}
-			
-			// Alllllright.......  Giggity...  Hide the login/register buttons
-			// and display the profile
-			Button playButton = (Button) findViewById(R.id.main_login_button);
-			playButton.setVisibility(View.INVISIBLE);
-			
-			//Button registerButton = (Button) findViewById(R.id.main_register_button);
-			//registerButton.setVisibility(View.INVISIBLE);
-		}
+
 	}
 
 
@@ -148,8 +130,7 @@ public class MainActivity extends Activity {
     
     public void onClickLogin(View view) {
     	Log.d("MainActivity", "Got login click event");
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		ah_.login(this);
     }
     
     public void onClickRegister(View view) {

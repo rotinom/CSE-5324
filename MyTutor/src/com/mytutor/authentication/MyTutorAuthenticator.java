@@ -1,13 +1,16 @@
 package com.mytutor.authentication;
 
-import android.accounts.*;
+import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
+import android.accounts.AbstractAccountAuthenticator;
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-
-import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 
 
 
@@ -15,20 +18,29 @@ import static android.accounts.AccountManager.KEY_BOOLEAN_RESULT;
 public class MyTutorAuthenticator extends AbstractAccountAuthenticator {
 
 	    private String TAG = "UdinicAuthenticator";
-	    private final Context mContext;
+	    private final Context context_;
+	    private AuthenticationHelper ah_;
 
 	    public MyTutorAuthenticator(Context context) {
 	        super(context);
 
 	        // I hate you! Google - set mContext as protected!
-	        this.mContext = context;
+	        this.context_ = context;
+	        
+	        ah_ = new AuthenticationHelper(context);
 	    }
 
 	    @Override
 	    public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) throws NetworkErrorException {
 	        Log.d("udinic", TAG + "> addAccount");
+	        
+	        // Only allow a single account
+	        if(ah_.has_account()) {
+	            return new Bundle();
+	        }
 
-	        final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
+	        // Start the authentication activity
+	        final Intent intent = new Intent(context_, AuthenticatorActivity.class);
 	        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, accountType);
 	        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
 	        intent.putExtra(AuthenticatorActivity.ARG_IS_ADDING_NEW_ACCOUNT, true);
@@ -54,7 +66,7 @@ public class MyTutorAuthenticator extends AbstractAccountAuthenticator {
 
 	        // Extract the username and password from the Account Manager, and ask
 	        // the server for an appropriate AuthToken.
-	        final AccountManager am = AccountManager.get(mContext);
+	        final AccountManager am = AccountManager.get(context_);
 
 	        String authToken = am.peekAuthToken(account, authTokenType);
 
@@ -85,7 +97,7 @@ public class MyTutorAuthenticator extends AbstractAccountAuthenticator {
 	        // If we get here, then we couldn't access the user's password - so we
 	        // need to re-prompt them for their credentials. We do that by creating
 	        // an intent to display our AuthenticatorActivity.
-	        final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
+	        final Intent intent = new Intent(context_, AuthenticatorActivity.class);
 	        intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
 	        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, account.type);
 	        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);

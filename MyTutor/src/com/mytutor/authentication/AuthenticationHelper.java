@@ -2,12 +2,12 @@ package com.mytutor.authentication;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-
-import com.mytutor.R;
 
 public class AuthenticationHelper {
 
@@ -66,6 +66,34 @@ public class AuthenticationHelper {
 	
 	public String get_password(){
 		return "";
+	}
+	
+	public void login(Activity activity) {
+	    
+	    
+	    final AccountManagerFuture<Bundle> future = 
+	        accountManager_.getAuthTokenByFeatures(
+                AuthenticationParams.ACCOUNT_TYPE,                  // account type
+                AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
+                null,                                               // features
+                activity,                                           // activity
+                null,                                               // addAccountOptions
+                null,                                               // getauthtokenoptions
+                new AccountManagerCallback<Bundle>() {              // callback
+                    @Override
+                    public void run(AccountManagerFuture<Bundle> future) {
+                        Bundle bnd = null;
+                        try {
+                            bnd = future.getResult();
+                            final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                            Log.d("AuthenticationHelper", "GetTokenForAccount Bundle is " + bnd);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        , null);                                                    // handler
 	}
 	
 	
