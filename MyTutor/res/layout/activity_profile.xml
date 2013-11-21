@@ -21,7 +21,8 @@
         android:adjustViewBounds="true"
         android:background="@drawable/button_bg"
         android:onClick="onSelectPicture"
-        android:scaleType="center" />
+        android:scaleType="center"
+        android:src="@drawable/empty_profile" />
 
     <!--
     <Button
