@@ -1,5 +1,6 @@
 package com.mytutor.session;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,8 @@ import org.json.JSONObject;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
@@ -54,6 +57,8 @@ implements
     private AccountManager accountManager_;
     
     private String authenticationToken_;
+    
+    private Profile profile_;
 	
     protected ServerSession(Context context, Activity activity) {
         
@@ -83,6 +88,7 @@ implements
                             try {
                                 bnd = future.getResult();
                                 authenticationToken_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                                Log.d("SearchParams", "Got authentication token: "+ authenticationToken_);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -91,12 +97,31 @@ implements
                     }
             , null); 
         
+        // Wait on the future
+        try {
+            future.getResult();
+        } catch (OperationCanceledException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (AuthenticatorException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         // Grab the main categories and subcategories in a cache
         List<String> mainCat = getMainCategories();
+        categoryCache_ = new HashMap<String, Map<String, String>>();
         for(String cat : mainCat) {
             Map<String, String> subcat = getSubCategories(cat);
             categoryCache_.put(cat,  subcat);
         }
+        
+        // Get our profile
+        profile_ = getProfile(authenticationToken_);
+        
     }
     
     public static ServerSession create() throws Exception{
@@ -232,7 +257,9 @@ implements
                JSONArray jArray = new JSONArray(response.toString());
                for(int i=0;i<jArray.length();i++){
                    JSONObject json_data = jArray.getJSONObject(i);
-                   ret.add(json_data.getString("name")); //save to string list
+                   String mainCategory = json_data.getString("name");
+                   Log.d("SearchResults","Got main category: " + mainCategory);
+                   ret.add(mainCategory); //save to string list
                }               
            }
            catch(JSONException e){
@@ -308,7 +335,7 @@ implements
                String response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/getAllInfo.php", postParameters);
          
                // store the result returned by PHP script that runs MySQL query
-               Log.d("SearchParams", "getSubCategories results: "+ response.toString());
+               Log.d("getProfile", "getSubCategories results: "+ response.toString());
                   
                // parse request into the profile
                ret.deserialize(response.toString());

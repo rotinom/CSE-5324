@@ -3,6 +3,7 @@ package com.mytutor;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.mytutor.search.SearchData;
 import com.mytutor.session.ServerSession;
@@ -46,10 +47,10 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 try {
-                    ServerSession session = ServerSession.create(SplashScreen.getApplicationContext(), this);
+                    ServerSession session = ServerSession.create(getApplicationContext(), SplashScreen.this);
                     sleep(SPLASH_TIME_OUT);
                 } catch (Exception e) {
-                    //Log.e(getClass().getName(), e.toString());
+                    Log.e(getClass().getName(), e.toString());
                 } finally {
                     // This method will be executed once the timer is over
                     // Start your app main activity
