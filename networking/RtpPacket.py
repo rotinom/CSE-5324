@@ -70,7 +70,7 @@ class RtpPacket:
         #RFD
         print 'decode RTP header/payload length: ' + str(len(byteStream))
         self.header = bytearray(byteStream[:HEADER_SIZE])
-        self.payload = byteStream[HEADER_SIZE:]
+        self.payload = bytearray(byteStream[HEADER_SIZE:])
         #RFD
         # Print the RTP header
         print '*** HEADER ***'
