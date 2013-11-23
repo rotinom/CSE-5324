@@ -92,12 +92,6 @@ public class MainActivity extends Activity {
 
     	Log.d("MainMenu", "Trying to login");
     	
-		String username = ah_.get_username();
-		String password = ah_.get_password();
-		
-		Log.d("MainMenu", "Trying username/password: " + username + "/" + password);
-		
-
 	}
 
 

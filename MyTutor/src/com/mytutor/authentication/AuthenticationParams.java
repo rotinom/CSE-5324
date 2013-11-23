@@ -10,7 +10,7 @@ public class AuthenticationParams {
     /**
      * Account name
      */
-    public static final String ACCOUNT_NAME = "Udinic";
+    public static final String ACCOUNT_NAME = "MyTutor";
 
     /**
      * Auth token types

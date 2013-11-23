@@ -1,11 +1,5 @@
 package com.mytutor.authentication;
 
-import com.mytutor.R;
-import com.mytutor.R.id;
-import com.mytutor.R.layout;
-import com.mytutor.R.menu;
-import com.mytutor.R.string;
-
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
@@ -16,7 +10,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -24,6 +17,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.mytutor.R;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -144,7 +139,7 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	        @Override
 	        protected Intent doInBackground(Void... params) {
 //	            String authtoken = sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
-	        	String authtoken = "asdfasdfasdf";
+	        	String authtoken = userName;
 	            final Intent res = new Intent();
 	            res.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
 	            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthenticationParams.ACCOUNT_TYPE);

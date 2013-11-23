@@ -11,6 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,6 +25,8 @@ import android.widget.ImageView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.LocationClient;
+import com.mytutor.authentication.AuthenticationParams;
+import com.mytutor.profile.Profile;
 import com.mytutor.search.CustomHttpClient;
 import com.mytutor.search.ImageLoader;
 import com.mytutor.search.SearchParams;
@@ -44,15 +50,46 @@ implements
     static final String logName_ = "ServerSession";
     
     private Map<String, Map<String, String>> categoryCache_;
+    
+    private AccountManager accountManager_;
+    
+    private String authenticationToken_;
 	
-    protected ServerSession(Context context) {
+    protected ServerSession(Context context, Activity activity) {
         
         // Set up ourselves as a location client, and connect
         locClient_ = new LocationClient(context, this, this);
         
-        // Connect the client.
+        // Connect the location client.
         Log.d(logName_, "connecting...");
         locClient_.connect();
+        
+        
+        // Get our authentication token if we have a login account
+        // Get our account
+        accountManager_ = AccountManager.get(activity);
+        final AccountManagerFuture<Bundle> future = 
+                accountManager_.getAuthTokenByFeatures(
+                    AuthenticationParams.ACCOUNT_TYPE,                  // account type
+                    AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
+                    null,                                               // features
+                    activity,                                            // activity
+                    null,                                               // addAccountOptions
+                    null,                                               // getauthtokenoptions
+                    new AccountManagerCallback<Bundle>() {              // callback
+                        @Override
+                        public void run(AccountManagerFuture<Bundle> future) {
+                            Bundle bnd = null;
+                            try {
+                                bnd = future.getResult();
+                                authenticationToken_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            , null); 
         
         // Grab the main categories and subcategories in a cache
         List<String> mainCat = getMainCategories();
@@ -70,9 +107,9 @@ implements
     	return singleton_;
     }
     
-    public static ServerSession create(Context context){
+    public static ServerSession create(Context context, Activity activity){
     	if(null == singleton_){
-    		singleton_ = new ServerSession(context);
+    		singleton_ = new ServerSession(context, activity);
     	}
     	
     	return singleton_;
@@ -253,6 +290,34 @@ implements
 	   
 	   public Map<String, Map<String, String>> getCategoryCache(){
 	       return categoryCache_;
+	   }
+	   
+	   
+	   public Profile getProfile(String email) {
+           Log.d("ServerSession::getProfile", "Getting Profile for: " + email);
+     
+           //populate post parameter with main category selection
+           ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+           postParameters.add(new BasicNameValuePair("email", email));
+              
+           // Return value
+           Profile ret = new Profile();
+           
+           //send off http request to php script on omega
+           try {
+               String response = CustomHttpClient.executeHttpPost("http://omega.uta.edu/~jwe0053/getAllInfo.php", postParameters);
+         
+               // store the result returned by PHP script that runs MySQL query
+               Log.d("SearchParams", "getSubCategories results: "+ response.toString());
+                  
+               // parse request into the profile
+               ret.deserialize(response.toString());
+           }
+           catch (Exception e) {
+               Log.e("log_tag","Error in http connection!!" + e.toString());     
+           }   
+           
+           return ret;
 	   }
 
 }

@@ -2,6 +2,10 @@ package com.mytutor.profile;
 
 import java.io.ByteArrayOutputStream;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.graphics.Bitmap;
 import android.util.Base64;
 
@@ -98,8 +102,25 @@ public class Profile {
         return ret;
     }
     
+    /**
+     * Pull data out of a JSON encoded string
+     * @param data
+     */
     public void deserialize(String data) {
         
+        JSONArray jArray;
+        try {
+            jArray = new JSONArray(data);
+
+        
+            for(int i=0;i<jArray.length();i++){
+                JSONObject json_data = jArray.getJSONObject(i);
+                //ret.put(json_data.getString("name"), json_data.getString("categoryId"));
+            } 
+        } 
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     
 }

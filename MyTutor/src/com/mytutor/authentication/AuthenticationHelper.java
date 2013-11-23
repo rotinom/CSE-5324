@@ -14,6 +14,7 @@ public class AuthenticationHelper {
 	private AccountManager accountManager_;
 	
 	Context context_;
+	String token_;
 	
 	static private String log_name = "AuthenticationHelper";
 	
@@ -60,16 +61,10 @@ public class AuthenticationHelper {
 		return false;
 	}
 	
-	public String get_username(){
-		return "";
-	}
+
 	
-	public String get_password(){
-		return "";
-	}
 	
 	public void login(Activity activity) {
-	    
 	    
 	    final AccountManagerFuture<Bundle> future = 
 	        accountManager_.getAuthTokenByFeatures(
@@ -85,7 +80,7 @@ public class AuthenticationHelper {
                         Bundle bnd = null;
                         try {
                             bnd = future.getResult();
-                            final String authtoken = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                            token_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
                             Log.d("AuthenticationHelper", "GetTokenForAccount Bundle is " + bnd);
 
                         } catch (Exception e) {
@@ -94,7 +89,40 @@ public class AuthenticationHelper {
                     }
                 }
         , null);                                                    // handler
+	
+//	    Account accounts[] = accountManager_.getAccountsByType(AuthenticationParams.ACCOUNT_TYPE);
+//	    
+//        final AccountManagerFuture<Bundle> future = 
+//                accountManager_.getAuthToken(
+//                        accounts[0], 
+//                        AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS, 
+//                        null, 
+//                        activity, 
+//                        null, 
+//                        null);
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Bundle bnd = future.getResult();
+//
+//                    final String token_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+//                    Log.d("udinic", "GetToken Bundle is " + bnd);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
 	}
+	
+	public String getToken() {
+	    return token_;
+	}
+	
+	public boolean has_authtoken() {
+        return token_ != null;
+    }
 	
 	
 }

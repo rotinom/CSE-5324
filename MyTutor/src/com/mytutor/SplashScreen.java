@@ -1,12 +1,11 @@
 package com.mytutor;
 
-import com.mytutor.search.SearchData;
-import com.mytutor.session.ServerSession;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+
+import com.mytutor.search.SearchData;
+import com.mytutor.session.ServerSession;
  
 public class SplashScreen extends Activity {
  
@@ -39,7 +38,7 @@ public class SplashScreen extends Activity {
         
         //Protocol.getInstance(this);
         
-        ServerSession session = ServerSession.create(this.getApplicationContext());
+        
         SearchData search = SearchData.create();
 
         Thread welcomeThread = new Thread() {
@@ -47,6 +46,7 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 try {
+                    ServerSession session = ServerSession.create(SplashScreen.getApplicationContext(), this);
                     sleep(SPLASH_TIME_OUT);
                 } catch (Exception e) {
                     //Log.e(getClass().getName(), e.toString());
