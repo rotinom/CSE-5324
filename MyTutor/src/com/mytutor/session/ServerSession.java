@@ -338,7 +338,7 @@ implements
                Log.d("getProfile", "getSubCategories results: "+ response.toString());
                   
                // parse request into the profile
-               ret.deserialize(response.toString());
+               ret.deserialize(email, response.toString());
            }
            catch (Exception e) {
                Log.e("log_tag","Error in http connection!!" + e.toString());     
