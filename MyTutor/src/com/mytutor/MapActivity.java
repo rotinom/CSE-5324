@@ -8,9 +8,13 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.mytutor.search.ImageLoader;
 import com.mytutor.search.SearchData;
 import com.mytutor.session.ServerSession;
 
@@ -113,11 +118,10 @@ public class MapActivity extends Activity
 				String rate = search.data.get(i).get("rate").toString(); 
 				String stringLat = search.data.get(i).get("lat").toString(); 
 				String stringLon =  search.data.get(i).get("lon").toString(); 
-				
+
 				double markerLat = Double.parseDouble(stringLat);
 				double markerLon = Double.parseDouble(stringLon);
-				
-				
+												
 				LatLng pos = new LatLng(markerLat, markerLon);
 				Marker user = map_.addMarker(
 			        new MarkerOptions()
@@ -171,6 +175,13 @@ public class MapActivity extends Activity
             {
                 View myContentsView = getLayoutInflater().inflate(R.layout.activity_map_infowindow, null);
                 
+                // TODO: Look up the AdView as a resource and load a request.             
+                /*
+        	    AdView adView = (AdView)myContentsView.findViewById(R.id.mapAdView);
+        	    AdRequest adRequest = new AdRequest.Builder().build();
+        	    adView.loadAd(adRequest);
+                */
+                
                 //Split the snippet string on the space character and store the results into an array.
                 String[] snippets = marker.getSnippet().split(" ");    
                 
@@ -186,7 +197,7 @@ public class MapActivity extends Activity
                 // Log.d("Rating: " , snippets[1]);  
                 ratingBar = (RatingBar)myContentsView.findViewById(R.id.tutorRatingMap);
                 ratingBar.setRating(Float.parseFloat(snippets[1])); 
-                
+                          
              	//  ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
                
                 return myContentsView;

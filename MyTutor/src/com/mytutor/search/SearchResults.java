@@ -19,20 +19,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.mytutor.MapActivity;
 import com.mytutor.R;
 
 public class SearchResults extends Activity
 {
-
+	
+	
+   private AdView adView; 
+   private static final String AD_ID = "ca-app-pub-2605134093291532/3912014007";
+   
    @Override
    protected void onCreate(Bundle savedInstanceState) 
    {
+	   
 	   super.onCreate(savedInstanceState);
+	   Log.d("TESTING:", "POOP");
 	   setContentView(R.layout.activity_results);
+	   
+	    // Look up the AdView as a resource and load a request.
+	    AdView adView = (AdView)this.findViewById(R.id.adView);
+	    AdRequest adRequest = new AdRequest.Builder().build();
+	    adView.loadAd(adRequest);
 	   
 	   //create empty post parameters for php request
 	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
