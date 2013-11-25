@@ -38,7 +38,7 @@ public class Profile {
     
     public Profile() {        
         json_ = new JSONArray();
-        categories_ = new HashMap<String, ArrayList<String>>();
+        setCategories(new HashMap<String, ArrayList<String>>());
     }
 //    
 //    public Bitmap getPicture() {
@@ -162,13 +162,13 @@ public class Profile {
                 
                 
                 // Create a list in the map if necessary
-                if(!categories_.containsKey(category)) {
+                if(!getCategories().containsKey(category)) {
                     ArrayList<String> subcat_list = new ArrayList<String>();
-                    categories_.put(category, subcat_list);
+                    getCategories().put(category, subcat_list);
                 }
                 
                 // Append the subcategory to our main category list
-                categories_.get(category).add(subcat);
+                getCategories().get(category).add(subcat);
                 
                 String s = json_data.toString(i);
                 Log.d("Profile", "Deserialized: " + s);  
@@ -223,6 +223,14 @@ public class Profile {
 
     public void setZipCode(String zipCode) {
         zipCode_ = zipCode;
+    }
+
+    public Map<String, ArrayList<String>> getCategories() {
+        return categories_;
+    }
+
+    public void setCategories(Map<String, ArrayList<String>> categories) {
+        categories_ = categories;
     }
     
 }

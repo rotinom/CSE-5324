@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -79,28 +77,7 @@ public class ProfileActivity extends Activity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        
-        ListView lv = (ListView)findViewById(R.id.categoryListView);
-        
-        
-        ////////////////
-        // Test
-        HashMap<String, String> datamap = new HashMap<String, String>();
-        datamap.put("main", "main1");
-        datamap.put("subcategory", "sub1");
-        
-        ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
-        
-        for(int i = 0; i < 25; i += 1) {
-            data.add(datamap);
-        }
-        ////////////////
-        
-        
-        lv.setAdapter(new ProfileCategoryAdapter(this, data)); 
-        
-        
+                
         statusMessage.setText("Retrieving profile");
         profileTask_ = new ProfileTask();
         profileTask_.execute((Void) null);
@@ -114,40 +91,40 @@ public class ProfileActivity extends Activity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(
-                    android.R.integer.config_shortAnimTime);
-
-            statusLayout_.setVisibility(View.VISIBLE);
-            statusLayout_.animate().setDuration(shortAnimTime)
-                    .alpha(show ? 1 : 0)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            statusLayout_.setVisibility(show ? View.VISIBLE
-                                    : View.GONE);
-                        }
-                    });
-
-            topLayout_.setVisibility(View.VISIBLE);
-            topLayout_.animate().setDuration(shortAnimTime)
-                    .alpha(show ? 0 : 1)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            topLayout_.setVisibility(show ? View.GONE
-                                    : View.VISIBLE);
-                        }
-                    });
-        } else {
+//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+//        // for very easy animations. If available, use these APIs to fade-in
+//        // the progress spinner.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            int shortAnimTime = getResources().getInteger(
+//                    android.R.integer.config_shortAnimTime);
+//
+//            statusLayout_.setVisibility(View.VISIBLE);
+//            statusLayout_.animate().setDuration(shortAnimTime)
+//                    .alpha(show ? 1 : 0)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            statusLayout_.setVisibility(show ? View.VISIBLE
+//                                    : View.GONE);
+//                        }
+//                    });
+//
+//            topLayout_.setVisibility(View.VISIBLE);
+//            topLayout_.animate().setDuration(shortAnimTime)
+//                    .alpha(show ? 0 : 1)
+//                    .setListener(new AnimatorListenerAdapter() {
+//                        @Override
+//                        public void onAnimationEnd(Animator animation) {
+//                            topLayout_.setVisibility(show ? View.GONE
+//                                    : View.VISIBLE);
+//                        }
+//                    });
+//        } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             statusLayout_.setVisibility(show ? View.VISIBLE : View.GONE);
             topLayout_.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+//        }
     }
     
     
@@ -269,6 +246,30 @@ public class ProfileActivity extends Activity {
         EditText zipcode = (EditText)findViewById(R.id.zipCode);
         Log.d(log_name, "Setting zipcode to: " + profile.getZipCode());
         zipcode.setText(profile.getZipCode());
+        
+        
+        
+        // Get the category data
+        ArrayList<HashMap<String, String>> data = 
+                new ArrayList<HashMap<String, String>>();
+        
+        // Loop through the categories
+        for(String cat_key : profile.getCategories().keySet()) {
+            
+            ArrayList<String> subcategory_list = 
+                    profile.getCategories().get(cat_key);
+            for(String subcategory : subcategory_list) {
+                HashMap<String, String> datamap = new HashMap<String, String>();
+                datamap.put("main", cat_key);
+                datamap.put("subcategory", subcategory);
+            
+                data.add(datamap);
+            }
+        }
+                
+        ListView lv = (ListView)findViewById(R.id.categoryListView);
+        lv.setAdapter(new ProfileCategoryAdapter(this, data)); 
+        lv.setSelectionAfterHeaderView();
     }
     
     
@@ -292,8 +293,6 @@ public class ProfileActivity extends Activity {
             
             try {
                 profile_ = ServerSession.getMyProfile();
-                
-                Thread.sleep(2000);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

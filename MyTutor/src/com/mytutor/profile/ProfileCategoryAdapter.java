@@ -23,7 +23,9 @@ public class ProfileCategoryAdapter extends BaseAdapter {
     public ProfileCategoryAdapter(Activity activity, ArrayList<HashMap<String, String>> data) {
         activity_ = activity;
         data_     = data;
-        inflater_ = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater_ = 
+            (LayoutInflater)activity.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE);
     }
  
     public int getCount() {
