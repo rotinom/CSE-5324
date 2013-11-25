@@ -33,6 +33,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.mytutor.R;
 import com.mytutor.session.ServerSession;
 
@@ -50,8 +52,7 @@ public class SearchParams extends Activity
    		} catch (Exception e1) {
    			// Do nothing
    		}
-   		
-   		
+   	   		
 	   subCatLookup_ = new HashMap<String,String>();
 	   
 	   //allow network requests in main thread
@@ -60,6 +61,11 @@ public class SearchParams extends Activity
 	   
 	   super.onCreate(savedInstanceState);
 	   setContentView(R.layout.activity_search);
+	   
+  		// Look up the AdView as a resource and load a request.
+	    AdView adView = (AdView)this.findViewById(R.id.testAdView);
+	    AdRequest adRequest = new AdRequest.Builder().build();
+	    adView.loadAd(adRequest);
 	   
 	   final Spinner mainCatSpinner_ = (Spinner)  findViewById(R.id.mainCatSpinner);
 	   final Spinner subCatSpinner_  = (Spinner)  findViewById(R.id.subCatSpinner);
