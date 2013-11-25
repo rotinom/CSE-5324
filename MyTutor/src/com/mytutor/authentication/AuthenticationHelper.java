@@ -14,7 +14,7 @@ public class AuthenticationHelper {
 	private AccountManager accountManager_;
 	
 	Context context_;
-	String token_;
+	static String token_;
 	
 	static private String log_name = "AuthenticationHelper";
 	

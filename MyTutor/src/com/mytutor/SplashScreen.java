@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.mytutor.authentication.AuthenticationHelper;
 import com.mytutor.search.SearchData;
 import com.mytutor.session.ServerSession;
  
@@ -12,11 +13,15 @@ public class SplashScreen extends Activity {
  
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 1500;
+    
+    private AuthenticationHelper ah_;
  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        
+        ah_ = new AuthenticationHelper(this);
  
         //new Handler().postDelayed(new Runnable() {
  
@@ -47,8 +52,17 @@ public class SplashScreen extends Activity {
             @Override
             public void run() {
                 try {
-                    ServerSession session = ServerSession.create(getApplicationContext(), SplashScreen.this);
+                    
+                    // Init the singleton
+                    ServerSession.create(getApplicationContext(), SplashScreen.this);
+                    
+                    // If we have an account, then login
+                    if(ah_.has_account()) {
+                        ah_.login(SplashScreen.this);
+                    }
+                    
                     sleep(SPLASH_TIME_OUT);
+                    
                 } catch (Exception e) {
                     Log.e(getClass().getName(), e.toString());
                 } finally {

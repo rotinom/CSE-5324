@@ -94,6 +94,31 @@ public class ImageLoader {
         };
         thread.start();
     }
+    
+    
+    public void fetchDrawableOnThread(final String urlString, Drawable drawable) {
+        if (drawableMap.containsKey(urlString)) {
+            drawable = drawableMap.get(urlString);
+        }
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message message) {
+                final Drawable drawable = (Drawable)message.obj;
+            }
+        };
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                //TODO : set imageView to a "pending" image
+                Drawable draw = fetchDrawable(urlString);
+                Message message = handler.obtainMessage(1, draw);
+                handler.sendMessage(message);
+            }
+        };
+        thread.start();
+    }
 
     private InputStream fetch(String urlString) throws MalformedURLException, IOException {
         DefaultHttpClient httpClient = new DefaultHttpClient();

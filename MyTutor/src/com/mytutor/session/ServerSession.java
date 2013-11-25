@@ -48,19 +48,24 @@ implements
     private double lon_;
     private double alt_;
     
-    static ServerSession singleton_;
+    private static ServerSession singleton_;
     
-    static final String logName_ = "ServerSession";
+    private static final String logName_ = "ServerSession";
     
-    private Map<String, Map<String, String>> categoryCache_;
+    private static Map<String, Map<String, String>> categoryCache_;
+    private static Map<String, String> subcatToCatMap_;
+    private static Map<String, String> subcatIdToName_;
     
-    private AccountManager accountManager_;
+    private static AccountManager accountManager_;
     
-    private String authenticationToken_;
+    private static String authenticationToken_;
     
-    private Profile profile_;
+    private static Profile profile_;
 	
     protected ServerSession(Context context, Activity activity) {
+        
+        subcatToCatMap_ = new HashMap<String, String>();
+        subcatIdToName_ = new HashMap<String, String>();
         
         // Set up ourselves as a location client, and connect
         locClient_ = new LocationClient(context, this, this);
@@ -115,13 +120,15 @@ implements
         List<String> mainCat = getMainCategories();
         categoryCache_ = new HashMap<String, Map<String, String>>();
         for(String cat : mainCat) {
-            Map<String, String> subcat = getSubCategories(cat);
-            categoryCache_.put(cat,  subcat);
-        }
-        
-        // Get our profile
-        profile_ = getProfile(authenticationToken_);
-        
+            Map<String, String> subcatMap = getSubCategories(cat);
+            
+            // Fill the map of subcategories -> main categories
+            for(String subcat : subcatMap.keySet()) {
+                subcatToCatMap_.put(subcat, cat);
+            }
+            
+            categoryCache_.put(cat,  subcatMap);
+        }        
     }
     
     public static ServerSession create() throws Exception{
@@ -135,6 +142,9 @@ implements
     public static ServerSession create(Context context, Activity activity){
     	if(null == singleton_){
     		singleton_ = new ServerSession(context, activity);
+    		
+            // Get our profile
+            profile_ = getProfile(authenticationToken_);
     	}
     	
     	return singleton_;
@@ -235,7 +245,6 @@ implements
         String url = "http://omega.uta.edu/~jwe0053/picture.php?email=" + email;
         imageLoader.fetchDrawableOnThread(url, dest);
 	}
-	
 
 	
 	public List<String> getMainCategories(){
@@ -300,7 +309,13 @@ implements
 	               JSONArray jArray = new JSONArray(result);
 	               for(int i=0;i<jArray.length();i++){
 	                   JSONObject json_data = jArray.getJSONObject(i);
-	                   ret.put(json_data.getString("name"), json_data.getString("categoryId"));
+	                   
+	                   String name = json_data.getString("name");
+	                   String id   = json_data.getString("categoryId");
+	                   ret.put(name, id);
+	                   
+	                   // reverse map
+	                   subcatIdToName_.put(id,  name);
 	               }           
 	           }
 	           catch(JSONException e){
@@ -319,8 +334,11 @@ implements
 	       return categoryCache_;
 	   }
 	   
+	   public static Profile getMyProfile() {
+	       return profile_;
+	   }
 	   
-	   public Profile getProfile(String email) {
+	   public static Profile getProfile(String email) {
            Log.d("ServerSession::getProfile", "Getting Profile for: " + email);
      
            //populate post parameter with main category selection
@@ -346,5 +364,12 @@ implements
            
            return ret;
 	   }
+	   
+	   public String getSubcategoryNameFromId(String id) {
+	       return subcatIdToName_.get(id);
+	   }
 
+	   public String getCategory(String subcat_id) {
+	       return subcatToCatMap_.get(getSubcategoryNameFromId(subcat_id));
+	   }
 }

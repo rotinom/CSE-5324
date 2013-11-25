@@ -1,24 +1,24 @@
 package com.mytutor.profile;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Bitmap;
-import android.util.Base64;
 import android.util.Log;
+
+import com.mytutor.session.ServerSession;
 
 
 
 public class Profile {
+
+    private Map<String, ArrayList<String>> categories_;
     
-    private Bitmap picture_;
     
-    private ArrayList<Integer> subCategory_;
     private String firstName_;
     private String lastName_;
     private double lat_;
@@ -30,7 +30,6 @@ public class Profile {
     private double rating_;
     private String profile_;
     private String email_;
-
     
     private final String PICTURE_KEY = "picture";
     private Map<String, String> attributeMap_;
@@ -38,11 +37,8 @@ public class Profile {
     JSONArray json_;
     
     public Profile() {        
-        // Default 200x200 bitmap
-        picture_ = Bitmap.createBitmap(200,200,Bitmap.Config.ARGB_8888);
         json_ = new JSONArray();
-        
-        subCategory_ = new ArrayList<Integer>();
+        categories_ = new HashMap<String, ArrayList<String>>();
     }
 //    
 //    public Bitmap getPicture() {
@@ -113,17 +109,17 @@ public class Profile {
     public String serialize() {
         String ret = new String();
         
-        
-
-        
-        
-        // Encode the bitmap into Base64
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
-        picture_.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] image = stream.toByteArray();
-        ret += Base64.encodeToString(image, Base64.DEFAULT);
-        
-        
+//        
+//
+//        
+//        
+//        // Encode the bitmap into Base64
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();  
+//        picture_.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        byte[] image = stream.toByteArray();
+//        ret += Base64.encodeToString(image, Base64.DEFAULT);
+//        
+//        
         return ret;
     }
     
@@ -132,36 +128,101 @@ public class Profile {
      * @param data
      */
     public void deserialize(String email, String data) {
-        email_ = email;
-        
+        setEmail(email);
         
         try {
+            // Get a session
+            ServerSession session = ServerSession.create();
+            
             json_ = new JSONArray(data);
             
             for(int i = 0; i < json_.length(); i++) {
                 JSONObject json_data = json_.getJSONObject(i);
                 
                 
-                firstName_ = json_data.getString("firstName");
-                lastName_ = json_data.getString("lastName");
+                setFirstName(json_data.getString("firstName"));
+                setLastName(json_data.getString("lastName"));
                 lat_ = json_data.getDouble("lat");
                 lon_ = json_data.getDouble("lon");
-                zipCode_ = json_data.getString("zipcode");
+                setZipCode(json_data.getString("zipcode"));
                 premium_ = (0 != json_data.getInt("premium"));
                 schedule_ = json_data.getString("schedule");
                 rating_ = json_data.getDouble("rating");
-                profile_ = json_data.getString("profile");
-                subCategory_.add(json_data.getInt("subCategory"));
+                setProfile(json_data.getString("profile"));
+                rate_ = json_data.getDouble("rate");
                 
+                String subcat_id = json_data.getString("subCategory");
+                String subcat    = new String();
+                
+                String category = new String();
 
-                String s = json_data.toString(i);
-                Log.d("Profile", "Deserialized: " + s);
+                category = session.getCategory(subcat_id);
+                subcat = session.getSubcategoryNameFromId(subcat_id);
+
                 
+                
+                // Create a list in the map if necessary
+                if(!categories_.containsKey(category)) {
+                    ArrayList<String> subcat_list = new ArrayList<String>();
+                    categories_.put(category, subcat_list);
+                }
+                
+                // Append the subcategory to our main category list
+                categories_.get(category).add(subcat);
+                
+                String s = json_data.toString(i);
+                Log.d("Profile", "Deserialized: " + s);  
             }
+            
         } catch (JSONException e) {
             // TODO Auto-generated catch block
+            Log.e("Profile", "Exception! " + e.toString());
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Log.e("Profile", "Exception! " + e.toString());
             e.printStackTrace();
         }
+    }
+
+    public String getFirstName() {
+        return firstName_;
+    }
+
+    public void setFirstName(String firstName) {
+        firstName_ = firstName;
+    }
+
+    public String getLastName() {
+        return lastName_;
+    }
+
+    public void setLastName(String lastName) {
+        lastName_ = lastName;
+    }
+
+    public String getEmail() {
+        return email_;
+    }
+
+    public void setEmail(String email) {
+        email_ = email;
+    }
+
+    public String getProfile() {
+        return profile_;
+    }
+
+    public void setProfile(String profile) {
+        profile_ = profile;
+    }
+
+    public String getZipCode() {
+        return zipCode_;
+    }
+
+    public void setZipCode(String zipCode) {
+        zipCode_ = zipCode;
     }
     
 }

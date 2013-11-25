@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.accounts.AccountManager;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -19,6 +18,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -36,8 +36,6 @@ public class ProfileActivity extends Activity {
 
     private final static String log_name = "ProfileActivity";
     
-    private AccountManager accountManager_;
-    
     private Bitmap photo_;
     
     private View topLayout_;
@@ -45,37 +43,45 @@ public class ProfileActivity extends Activity {
     
     private ProfileTask profileTask_;
 
+    private Profile profile_;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         
-        // Get our top layout
+        // Get our top layouts before we call showProgress
         topLayout_ = findViewById(R.id.profile_grid_layout);
         statusLayout_ = findViewById(R.id.profile_status);
         
-        // get account manager
-        accountManager_ = AccountManager.get(this);
+        TextView statusMessage = (TextView)findViewById(R.id.profile_status_message);
+        showProgress(true);
+        
+        profile_ = new Profile();
+        ah_ = new AuthenticationHelper(this);
+        
+
+
+        
+        
+
         
         // Get the server session
         try {
             session_ = ServerSession.create();
+            
+            // Start the process to get the image button 
+            statusMessage.setText("Retrieving profile image");
+            ImageButton pic = (ImageButton)findViewById(R.id.button_profile_pic);
+            session_.getProfilePicAsync(ah_.getToken(), pic);
+            
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
         
-        
-
-        
-        
-
-
-        
-        
         ListView lv = (ListView)findViewById(R.id.categoryListView);
-        
         
         
         ////////////////
@@ -95,9 +101,7 @@ public class ProfileActivity extends Activity {
         lv.setAdapter(new ProfileCategoryAdapter(this, data)); 
         
         
-        TextView statusMessage = (TextView)findViewById(R.id.profile_status_message);
         statusMessage.setText("Retrieving profile");
-        showProgress(true);
         profileTask_ = new ProfileTask();
         profileTask_.execute((Void) null);
     }
@@ -246,6 +250,26 @@ public class ProfileActivity extends Activity {
         }
     }
     
+    private void setValues(Profile profile) {
+        
+        EditText firstName = (EditText)findViewById(R.id.firstName);
+        String fn = profile.getFirstName();
+        Log.d(log_name, "Setting first name to: " + fn);
+        firstName.setText(fn);
+        
+        EditText lastName = (EditText)findViewById(R.id.lastName);
+        String ln = profile.getLastName();
+        Log.d(log_name, "Setting last name to: " + ln);
+        lastName.setText(ln);
+        
+        EditText email = (EditText)findViewById(R.id.emailAddress);
+        Log.d(log_name, "Setting email to: " + profile.getEmail());
+        email.setText(profile.getEmail());
+        
+        EditText zipcode = (EditText)findViewById(R.id.zipCode);
+        Log.d(log_name, "Setting zipcode to: " + profile.getZipCode());
+        zipcode.setText(profile.getZipCode());
+    }
     
     
     /**
@@ -256,9 +280,7 @@ public class ProfileActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            String token = new String();
-            
-            
+
             
 //            // Wait for our authentication to come back
 //            try {
@@ -268,8 +290,14 @@ public class ProfileActivity extends Activity {
 //                e.printStackTrace();
 //            }
             
-            session_.getProfile(token);
-            
+            try {
+                profile_ = ServerSession.getMyProfile();
+                
+                Thread.sleep(2000);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
 //            try {
 //                // Simulate network access.
@@ -293,6 +321,7 @@ public class ProfileActivity extends Activity {
         @Override
         protected void onPostExecute(final Boolean success) {
 //            mAuthTask = null;
+            setValues(profile_);
             showProgress(false);
 
 //            if (success) {
