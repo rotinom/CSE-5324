@@ -52,9 +52,11 @@ public class ProfileActivity extends Activity {
         topLayout_ = findViewById(R.id.profile_grid_layout);
         statusLayout_ = findViewById(R.id.profile_status);
         
+        // Show the progress bar
         TextView statusMessage = (TextView)findViewById(R.id.profile_status_message);
         showProgress(true);
         
+        // Get some helper classes
         profile_ = new Profile();
         ah_ = new AuthenticationHelper(this);
         

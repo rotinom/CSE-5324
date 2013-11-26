@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
@@ -39,8 +39,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:rowCount="11"
-    android:visibility="gone"
-    tools:context=".ProfileActivity" >
+    android:visibility="visible"
+    tools:context=".ProfileActivity" 
+    android:focusable="true" 
+    android:focusableInTouchMode="true"
+>
 
     <ImageButton
         android:id="@+id/button_profile_pic"
@@ -49,26 +52,14 @@
         android:layout_column="0"
         android:layout_columnSpan="1"
         android:layout_row="0"
-        android:layout_rowSpan="4"
+        android:layout_rowSpan="5"
         android:adjustViewBounds="true"
         android:background="@drawable/button_bg"
         android:onClick="onSelectPicture"
         android:scaleType="center"
-        android:src="@drawable/empty_profile" />
-
-    <!--
-    <Button
-        android:id="@+id/button_profile_pic"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_column="0"
-        android:layout_columnSpan="1"
-        android:layout_row="0"
-        android:layout_rowSpan="2"
-        android:background="@drawable/button_bg"
-        android:onClick="onSelectPicture"
-        android:text="Profile Picture" />
-    -->
+        android:src="@drawable/empty_profile" 
+        android:enabled="false"
+   	/>
 
     <EditText
         android:id="@+id/firstName"
@@ -114,28 +105,6 @@
         android:inputType="textEmailAddress"
         android:lines="1"
         android:maxLines="1" />
-
-    <EditText
-        android:id="@+id/postalAddress1"
-        android:layout_width="fill_parent"
-        android:layout_column="0"
-        android:layout_columnSpan="3"
-        android:layout_gravity="left|top"
-        android:layout_row="4"
-        android:ems="10"
-        android:hint="Postal Address 1"
-        android:inputType="textPostalAddress" />
-
-    <EditText
-        android:id="@+id/postalAddress2"
-        android:layout_width="fill_parent"
-        android:layout_column="0"
-        android:layout_columnSpan="3"
-        android:layout_gravity="left|top"
-        android:layout_row="5"
-        android:ems="10"
-        android:hint="Postal Address 2"
-        android:inputType="textPostalAddress" />
     <!--
     <Spinner
         android:id="@+id/spinner1"
@@ -145,30 +114,6 @@
         android:layout_row="4"
         android:contentDescription="State" />
     -->
-
-    <EditText
-        android:id="@+id/city"
-        android:layout_column="0"
-        android:layout_gravity="left|top"
-        android:layout_row="6"
-        android:ems="10"
-        android:hint="City"
-        android:inputType="textPostalAddress" />
-
-    <EditText
-        android:id="@+id/state"
-        android:layout_column="1"
-        android:layout_gravity="fill_horizontal"
-        android:ems="10"
-        android:hint="State"
-        android:inputType="textPostalAddress" />
-
-    <EditText
-        android:id="@+id/zipCode"
-        android:layout_gravity="fill_horizontal"
-        android:ems="10"
-        android:hint="Zip Code"
-        android:inputType="textPostalAddress" />
 
     <ListView
         android:id="@+id/categoryListView"
@@ -197,6 +142,15 @@
         android:background="@android:color/darker_gray" />
         
          -->
+
+    <EditText
+        android:id="@+id/zipCode"
+        android:layout_column="1"
+        android:layout_gravity="right|center_vertical"
+        android:layout_row="3"
+        android:ems="10"
+        android:hint="Zip Code"
+        android:inputType="textPostalAddress" />
 
 </GridLayout>
 
