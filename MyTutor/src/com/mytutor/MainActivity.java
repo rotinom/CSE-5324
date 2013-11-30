@@ -71,6 +71,8 @@ public class MainActivity extends Activity {
 		   	case R.id.action_remove_all_accts:
 				Log.d("MainActivity", "Got remove all accounts click event");
 				ah_.remove_all_of_our_accounts();
+				authenticated_ = false;
+				invalidateOptionsMenu();
 				return true;
 				
 		   	case R.id.action_edit_profile:

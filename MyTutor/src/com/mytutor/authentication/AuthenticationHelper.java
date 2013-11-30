@@ -46,7 +46,8 @@ public class AuthenticationHelper {
 				Log.d(log_name, "removeAccount returned: " + ret);
 				
 			}
-		}		
+		}
+		token_ = null;
 	}
 	   
 	
@@ -153,7 +154,5 @@ public class AuthenticationHelper {
 	
 	public boolean has_authtoken() {
         return token_ != null;
-    }
-	
-	
+    }	
 }
