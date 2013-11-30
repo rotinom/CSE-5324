@@ -3,7 +3,9 @@ package com.mytutor.profile;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -23,12 +25,12 @@ import android.widget.TextView;
 
 import com.mytutor.R;
 import com.mytutor.authentication.AuthenticationHelper;
+import com.mytutor.authentication.AuthenticationParams;
 import com.mytutor.session.ServerSession;
 
 public class ProfileActivity extends Activity {
 
     private ServerSession session_;
-    private AuthenticationHelper ah_;
 
     private final static int PICK_FROM_CAMERA = 0;
 
@@ -42,6 +44,8 @@ public class ProfileActivity extends Activity {
     private ProfileTask profileTask_;
 
     private Profile profile_;
+    private String email_;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +56,24 @@ public class ProfileActivity extends Activity {
         topLayout_ = findViewById(R.id.profile_grid_layout);
         statusLayout_ = findViewById(R.id.profile_status);
         
+        // Set our title
+        setTitle("View/Edit Profile");
+        
         // Show the progress bar
         TextView statusMessage = (TextView)findViewById(R.id.profile_status_message);
         showProgress(true);
         
         // Get some helper classes
         profile_ = new Profile();
-        ah_ = new AuthenticationHelper(this);
+        AuthenticationHelper ah = new AuthenticationHelper(this);
         
-
-
+        try {
+			email_ = ah.getToken();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         
-        
-
         
         // Get the server session
         try {
@@ -73,7 +82,7 @@ public class ProfileActivity extends Activity {
             // Start the process to get the image button 
             statusMessage.setText("Retrieving profile image");
             ImageButton pic = (ImageButton)findViewById(R.id.button_profile_pic);
-            session_.getProfilePicAsync(ah_.getToken(), pic);
+            session_.getProfilePicAsync(email_, pic);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -294,7 +303,7 @@ public class ProfileActivity extends Activity {
 //            }
             
             try {
-                profile_ = ServerSession.getMyProfile();
+                profile_ = ServerSession.getProfile(email_);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -344,3 +353,4 @@ public class ProfileActivity extends Activity {
     
     
 }
+;

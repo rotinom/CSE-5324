@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -151,46 +152,46 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	        protected void onPostExecute(Intent intent) {
 	            finishLogin(intent);
 	        }
-	    }.execute();
+	    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		
 		
 		
-//		if (mAuthTask != null) {
-//			return;
-//		}
-//
-//		// Reset errors.
-//		mEmailView.setError(null);
-//		mPasswordView.setError(null);
-//
-//		// Store values at the time of the login attempt.
-//		mEmail = mEmailView.getText().toString();
-//		mPassword = mPasswordView.getText().toString();
-//
-//		boolean cancel = false;
-//		View focusView = null;
-//
-//		// Check for a valid password.
-//		if (TextUtils.isEmpty(mPassword)) {
-//			mPasswordView.setError(getString(R.string.error_field_required));
-//			focusView = mPasswordView;
-//			cancel = true;
-//		} else if (mPassword.length() < 4) {
-//			mPasswordView.setError(getString(R.string.error_invalid_password));
-//			focusView = mPasswordView;
-//			cancel = true;
-//		}
-//
-//		// Check for a valid email address.
-//		if (TextUtils.isEmpty(mEmail)) {
-//			mEmailView.setError(getString(R.string.error_field_required));
-//			focusView = mEmailView;
-//			cancel = true;
-//		} else if (!mEmail.contains("@")) {
-//			mEmailView.setError(getString(R.string.error_invalid_email));
-//			focusView = mEmailView;
-//			cancel = true;
-//		}
+		if (mAuthTask != null) {
+			return;
+		}
+
+		// Reset errors.
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
+
+		// Store values at the time of the login attempt.
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
+
+		boolean cancel = false;
+		View focusView = null;
+
+		// Check for a valid password.
+		if (TextUtils.isEmpty(mPassword)) {
+			mPasswordView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			cancel = true;
+		} else if (mPassword.length() < 4) {
+			mPasswordView.setError(getString(R.string.error_invalid_password));
+			focusView = mPasswordView;
+			cancel = true;
+		}
+
+		// Check for a valid email address.
+		if (TextUtils.isEmpty(mEmail)) {
+			mEmailView.setError(getString(R.string.error_field_required));
+			focusView = mEmailView;
+			cancel = true;
+		} else if (!mEmail.contains("@")) {
+			mEmailView.setError(getString(R.string.error_invalid_email));
+			focusView = mEmailView;
+			cancel = true;
+		}
 //
 //		if (cancel) {
 //			// There was an error; don't attempt login and focus the first

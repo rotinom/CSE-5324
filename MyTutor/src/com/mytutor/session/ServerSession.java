@@ -56,11 +56,11 @@ implements
     private static Map<String, String> subcatToCatMap_;
     private static Map<String, String> subcatIdToName_;
     
-    private static AccountManager accountManager_;
+//    private static AccountManager accountManager_;
     
-    private static String authenticationToken_;
+//    private static String authenticationToken_;
     
-    private static Profile profile_;
+//    private static Profile profile_;
 	
     protected ServerSession(Context context, Activity activity) {
         
@@ -75,46 +75,46 @@ implements
         locClient_.connect();
         
         
-        // Get our authentication token if we have a login account
-        // Get our account
-        accountManager_ = AccountManager.get(activity);
-        final AccountManagerFuture<Bundle> future = 
-                accountManager_.getAuthTokenByFeatures(
-                    AuthenticationParams.ACCOUNT_TYPE,                  // account type
-                    AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
-                    null,                                               // features
-                    activity,                                            // activity
-                    null,                                               // addAccountOptions
-                    null,                                               // getauthtokenoptions
-                    new AccountManagerCallback<Bundle>() {              // callback
-                        @Override
-                        public void run(AccountManagerFuture<Bundle> future) {
-                            Bundle bnd = null;
-                            try {
-                                bnd = future.getResult();
-                                authenticationToken_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                                Log.d("SearchParams", "Got authentication token: "+ authenticationToken_);
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-            , null); 
-        
-        // Wait on the future
-        try {
-            future.getResult();
-        } catch (OperationCanceledException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (AuthenticatorException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        // Get our authentication token if we have a login account
+//        // Get our account
+//        accountManager_ = AccountManager.get(activity);
+//        final AccountManagerFuture<Bundle> future = 
+//                accountManager_.getAuthTokenByFeatures(
+//                    AuthenticationParams.ACCOUNT_TYPE,                  // account type
+//                    AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
+//                    null,                                               // features
+//                    activity,                                            // activity
+//                    null,                                               // addAccountOptions
+//                    null,                                               // getauthtokenoptions
+//                    new AccountManagerCallback<Bundle>() {              // callback
+//                        @Override
+//                        public void run(AccountManagerFuture<Bundle> future) {
+//                            Bundle bnd = null;
+//                            try {
+//                                bnd = future.getResult();
+//                                authenticationToken_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+//                                Log.d("SearchParams", "Got authentication token: "+ authenticationToken_);
+//
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//            , null); 
+//        
+//        // Wait on the future
+//        try {
+//            future.getResult();
+//        } catch (OperationCanceledException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (AuthenticatorException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         
         // Grab the main categories and subcategories in a cache
         List<String> mainCat = getMainCategories();
@@ -143,8 +143,8 @@ implements
     	if(null == singleton_){
     		singleton_ = new ServerSession(context, activity);
     		
-            // Get our profile
-            profile_ = getProfile(authenticationToken_);
+//            // Get our profile
+//            profile_ = getProfile(authenticationToken_);
     	}
     	
     	return singleton_;
@@ -334,9 +334,6 @@ implements
 	       return categoryCache_;
 	   }
 	   
-	   public static Profile getMyProfile() {
-	       return profile_;
-	   }
 	   
 	   public static Profile getProfile(String email) {
            Log.d("ServerSession::getProfile", "Getting Profile for: " + email);
