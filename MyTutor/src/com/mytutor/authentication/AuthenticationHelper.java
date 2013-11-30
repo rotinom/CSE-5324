@@ -1,9 +1,13 @@
 package com.mytutor.authentication;
 
+import java.io.IOException;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.accounts.AuthenticatorException;
+import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -42,9 +46,14 @@ public class AuthenticationHelper {
 				Log.d(log_name, "removeAccount returned: " + ret);
 				
 			}
-		}		
+		}
+		token_ = null;
 	}
 	   
+	public void logout(){
+		token_ = null;
+		remove_all_of_our_accounts();
+	}
 	
 	public boolean has_account(){
 		Account[] accounts = accountManager_.getAccounts();
@@ -64,31 +73,55 @@ public class AuthenticationHelper {
 
 	
 	
-	public void login(Activity activity) {
+	public String login(Activity activity) {
+		
+		if(null != token_){
+			return token_;
+		}
+		
 	    
-	    final AccountManagerFuture<Bundle> future = 
-	        accountManager_.getAuthTokenByFeatures(
-                AuthenticationParams.ACCOUNT_TYPE,                  // account type
-                AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
-                null,                                               // features
-                activity,                                           // activity
-                null,                                               // addAccountOptions
-                null,                                               // getauthtokenoptions
-                new AccountManagerCallback<Bundle>() {              // callback
-                    @Override
-                    public void run(AccountManagerFuture<Bundle> future) {
-                        Bundle bnd = null;
-                        try {
-                            bnd = future.getResult();
-                            token_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
-                            Log.d("AuthenticationHelper", "GetTokenForAccount Bundle is " + bnd);
+      // Get our authentication token if we have a login account
+      final AccountManagerFuture<Bundle> future = 
+              accountManager_.getAuthTokenByFeatures(
+                  AuthenticationParams.ACCOUNT_TYPE,                  // account type
+                  AuthenticationParams.AUTHTOKEN_TYPE_FULL_ACCESS,    // auth token type
+                  null,                                               // features
+                  activity,                                            // activity
+                  null,                                               // addAccountOptions
+                  null,                                               // getauthtokenoptions
+                  new AccountManagerCallback<Bundle>() {              // callback
+                      @Override
+                      public void run(AccountManagerFuture<Bundle> future) {
+                          Bundle bnd = null;
+                          try {
+                              bnd = future.getResult();
+                              token_ = bnd.getString(AccountManager.KEY_AUTHTOKEN);
+                              Log.d("SearchParams", "Got authentication token: "+ token_);
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-        , null);                                                    // handler
+                          } catch (Exception e) {
+                              e.printStackTrace();
+                          }
+                      }
+                  }
+          , null); 
+     
+      
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+			    try {
+			        Bundle bnd = future.getResult();
+		        } catch (Exception e) {
+			            e.printStackTrace();
+		        }
+		    }
+		});
+		t.start();
+      
+		return token_;
+      
+      
+      // handler
 	
 //	    Account accounts[] = accountManager_.getAccountsByType(AuthenticationParams.ACCOUNT_TYPE);
 //	    
@@ -116,13 +149,14 @@ public class AuthenticationHelper {
 //        }).start();
 	}
 	
-	public String getToken() {
+	public String getToken() throws Exception {
+		if(null == token_){
+			throw new Exception("We don't have a valid security token");
+		}
 	    return token_;
 	}
 	
 	public boolean has_authtoken() {
         return token_ != null;
-    }
-	
-	
+    }	
 }

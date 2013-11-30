@@ -3,7 +3,9 @@ package com.mytutor.profile;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,12 +16,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mytutor.R;
 import com.mytutor.authentication.AuthenticationHelper;
@@ -28,7 +32,6 @@ import com.mytutor.session.ServerSession;
 public class ProfileActivity extends Activity {
 
     private ServerSession session_;
-    private AuthenticationHelper ah_;
 
     private final static int PICK_FROM_CAMERA = 0;
 
@@ -42,6 +45,8 @@ public class ProfileActivity extends Activity {
     private ProfileTask profileTask_;
 
     private Profile profile_;
+    private String email_;
+    
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,19 +57,24 @@ public class ProfileActivity extends Activity {
         topLayout_ = findViewById(R.id.profile_grid_layout);
         statusLayout_ = findViewById(R.id.profile_status);
         
+        // Set our title
+        setTitle("View/Edit Profile");
+        
         // Show the progress bar
         TextView statusMessage = (TextView)findViewById(R.id.profile_status_message);
         showProgress(true);
         
         // Get some helper classes
         profile_ = new Profile();
-        ah_ = new AuthenticationHelper(this);
+        AuthenticationHelper ah = new AuthenticationHelper(this);
         
-
-
+        try {
+			email_ = ah.getToken();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
         
-        
-
         
         // Get the server session
         try {
@@ -73,7 +83,7 @@ public class ProfileActivity extends Activity {
             // Start the process to get the image button 
             statusMessage.setText("Retrieving profile image");
             ImageButton pic = (ImageButton)findViewById(R.id.button_profile_pic);
-            session_.getProfilePicAsync(ah_.getToken(), pic);
+            session_.getProfilePicAsync(email_, pic);
             
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -83,6 +93,29 @@ public class ProfileActivity extends Activity {
         statusMessage.setText("Retrieving profile");
         profileTask_ = new ProfileTask();
         profileTask_.execute((Void) null);
+    }
+    
+    
+    
+    
+
+    public boolean onOptionsItemSelected (MenuItem item){
+    	Log.d("ProfileActivity", "Got a menu click event");
+    	
+		switch (item.getItemId()) {
+					
+		   	case R.id.action_edit_profile:
+				Log.d("ProfileActivity", "Got remove all accounts click event");
+			    Toast t = Toast.makeText(this, "Editing is not yet implemented", Toast.LENGTH_LONG);
+			    t.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 0);
+			    t.show();
+			    
+				return true;
+				
+					
+		   	default:
+		   		return super.onOptionsItemSelected(item);
+		}
     }
     
     
@@ -231,21 +264,20 @@ public class ProfileActivity extends Activity {
     
     private void setValues(Profile profile) {
         
-        EditText firstName = (EditText)findViewById(R.id.firstName);
+    	TextView firstName = (TextView)findViewById(R.id.firstName);
         String fn = profile.getFirstName();
         Log.d(log_name, "Setting first name to: " + fn);
-        firstName.setText(fn);
         
-        EditText lastName = (EditText)findViewById(R.id.lastName);
+        TextView lastName = (TextView)findViewById(R.id.lastName);
         String ln = profile.getLastName();
         Log.d(log_name, "Setting last name to: " + ln);
-        lastName.setText(ln);
+        firstName.setText(fn + " " + ln);
         
-        EditText email = (EditText)findViewById(R.id.emailAddress);
+        TextView email = (TextView)findViewById(R.id.emailAddress);
         Log.d(log_name, "Setting email to: " + profile.getEmail());
         email.setText(profile.getEmail());
         
-        EditText zipcode = (EditText)findViewById(R.id.zipCode);
+        TextView zipcode = (TextView)findViewById(R.id.zipCode);
         Log.d(log_name, "Setting zipcode to: " + profile.getZipCode());
         zipcode.setText(profile.getZipCode());
         
@@ -294,7 +326,7 @@ public class ProfileActivity extends Activity {
 //            }
             
             try {
-                profile_ = ServerSession.getMyProfile();
+                profile_ = ServerSession.getProfile(email_);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -344,3 +376,4 @@ public class ProfileActivity extends Activity {
     
     
 }
+;
