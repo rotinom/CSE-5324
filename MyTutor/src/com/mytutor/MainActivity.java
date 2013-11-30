@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.mytutor.authentication.AuthenticationHelper;
 import com.mytutor.profile.ProfileActivity;
@@ -55,9 +57,17 @@ public class MainActivity extends Activity {
         
         
         // Hide items if we aren't authenticated
+        // Kind of a hack doing this here.  But update the login button
+        Button mainLogin = (Button) findViewById(R.id.main_login_button);
+        
+        
         if(!authenticated_){
         	MenuItem profile = menu.findItem(R.id.action_edit_profile);
         	profile.setVisible(false);
+        	mainLogin.setText("Login/\nRegister");
+        }
+        else{
+        	mainLogin.setText("Logout");
         }
         
         return true;
@@ -87,9 +97,17 @@ public class MainActivity extends Activity {
     
     public void onClickLogin(View view) {
     	Log.d("MainActivity", "Got login click event");
-		ah_.login(this);
-		authenticated_ = true;
-		invalidateOptionsMenu();
+    	
+    	if(authenticated_){
+    		ah_.logout();
+    		authenticated_ = false;
+    		invalidateOptionsMenu();
+    	}
+    	else{
+			ah_.login(this);
+			authenticated_ = true;
+			invalidateOptionsMenu();
+    	}
     }
     
     public void onClickRegister(View view) {

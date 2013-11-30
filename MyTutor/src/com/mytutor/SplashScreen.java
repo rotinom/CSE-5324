@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mytutor.authentication.AuthenticationHelper;
 import com.mytutor.search.SearchData;
@@ -47,6 +48,12 @@ public class SplashScreen extends Activity {
         
         SearchData search = SearchData.create();
 
+        // Show a popup
+        if(ah_.has_account()) {
+        	Toast.makeText(SplashScreen.this, "Automatically Logging In", Toast.LENGTH_SHORT).show();
+        }
+        
+        
         Thread welcomeThread = new Thread() {
 
             @Override

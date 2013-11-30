@@ -61,7 +61,7 @@
         android:enabled="false"
    	/>
 
-    <EditText
+    <TextView
         android:id="@+id/firstName"
         android:layout_width="fill_parent"
         android:layout_column="1"
@@ -72,27 +72,12 @@
         android:ems="10"
         android:hint="First Name"
         android:inputType="textPersonName"
-        android:singleLine="true" >
+        android:singleLine="true" 
+        android:textAppearance="?android:attr/textAppearanceMedium" >
 
-        <requestFocus />
-    </EditText>
+    </TextView>
 
-    <EditText
-        android:id="@+id/lastName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:layout_columnSpan="2"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_marginRight="10dp"
-        android:layout_row="1"
-        android:ems="10"
-        android:hint="Last Name"
-        android:inputType="textPersonName"
-        android:lines="1"
-        android:maxLines="1" />
-
-    <EditText
+    <TextView
         android:id="@+id/emailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -104,16 +89,9 @@
         android:hint="E-Mail Address"
         android:inputType="textEmailAddress"
         android:lines="1"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
         android:maxLines="1" />
-    <!--
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="151dp"
-        android:layout_column="2"
-        android:layout_gravity="left|top"
-        android:layout_row="4"
-        android:contentDescription="State" />
-    -->
+
 
     <ListView
         android:id="@+id/categoryListView"
@@ -121,6 +99,7 @@
         android:layout_column="0"
         android:layout_columnSpan="3"
         android:layout_gravity="left|top"
+        android:layout_marginLeft="25dp"
         android:layout_row="10" >
 
     </ListView>
@@ -143,13 +122,14 @@
         
          -->
 
-    <EditText
+    <TextView
         android:id="@+id/zipCode"
         android:layout_column="1"
         android:layout_gravity="right|center_vertical"
         android:layout_row="3"
         android:ems="10"
         android:hint="Zip Code"
+        android:textAppearance="?android:attr/textAppearanceMedium" 
         android:inputType="textPostalAddress" />
 
 </GridLayout>

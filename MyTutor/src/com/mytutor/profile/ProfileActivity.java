@@ -16,16 +16,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mytutor.R;
 import com.mytutor.authentication.AuthenticationHelper;
-import com.mytutor.authentication.AuthenticationParams;
 import com.mytutor.session.ServerSession;
 
 public class ProfileActivity extends Activity {
@@ -92,6 +93,29 @@ public class ProfileActivity extends Activity {
         statusMessage.setText("Retrieving profile");
         profileTask_ = new ProfileTask();
         profileTask_.execute((Void) null);
+    }
+    
+    
+    
+    
+
+    public boolean onOptionsItemSelected (MenuItem item){
+    	Log.d("ProfileActivity", "Got a menu click event");
+    	
+		switch (item.getItemId()) {
+					
+		   	case R.id.action_edit_profile:
+				Log.d("ProfileActivity", "Got remove all accounts click event");
+			    Toast t = Toast.makeText(this, "Editing is not yet implemented", Toast.LENGTH_LONG);
+			    t.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 0);
+			    t.show();
+			    
+				return true;
+				
+					
+		   	default:
+		   		return super.onOptionsItemSelected(item);
+		}
     }
     
     
@@ -240,21 +264,20 @@ public class ProfileActivity extends Activity {
     
     private void setValues(Profile profile) {
         
-        EditText firstName = (EditText)findViewById(R.id.firstName);
+    	TextView firstName = (TextView)findViewById(R.id.firstName);
         String fn = profile.getFirstName();
         Log.d(log_name, "Setting first name to: " + fn);
-        firstName.setText(fn);
         
-        EditText lastName = (EditText)findViewById(R.id.lastName);
+        TextView lastName = (TextView)findViewById(R.id.lastName);
         String ln = profile.getLastName();
         Log.d(log_name, "Setting last name to: " + ln);
-        lastName.setText(ln);
+        firstName.setText(fn + " " + ln);
         
-        EditText email = (EditText)findViewById(R.id.emailAddress);
+        TextView email = (TextView)findViewById(R.id.emailAddress);
         Log.d(log_name, "Setting email to: " + profile.getEmail());
         email.setText(profile.getEmail());
         
-        EditText zipcode = (EditText)findViewById(R.id.zipCode);
+        TextView zipcode = (TextView)findViewById(R.id.zipCode);
         Log.d(log_name, "Setting zipcode to: " + profile.getZipCode());
         zipcode.setText(profile.getZipCode());
         

@@ -50,6 +50,10 @@ public class AuthenticationHelper {
 		token_ = null;
 	}
 	   
+	public void logout(){
+		token_ = null;
+		remove_all_of_our_accounts();
+	}
 	
 	public boolean has_account(){
 		Account[] accounts = accountManager_.getAccounts();

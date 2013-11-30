@@ -80,6 +80,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 
 		setContentView(R.layout.activity_authenticate);
 		
+		setTitle("Authenticate to MyTutor Service");
+		
 		accountManager_ = AccountManager.get(getBaseContext());
 		
 		
