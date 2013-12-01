@@ -73,6 +73,7 @@ public class ImageLoader {
 
     public void fetchDrawableOnThread(final String urlString, final ImageView imageView) {
         if (drawableMap.containsKey(urlString)) {
+        	Log.d("IMG 1","Getting Image");
             imageView.setImageDrawable(drawableMap.get(urlString));
         }
 

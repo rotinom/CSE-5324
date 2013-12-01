@@ -1,24 +1,41 @@
 package com.mytutor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.google.android.gms.ads.*;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -28,8 +45,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mytutor.search.ImageLoader;
 import com.mytutor.search.SearchData;
+import com.mytutor.search.SearchResults;
 import com.mytutor.session.ServerSession;
-
+import com.mytutor.search.SearchParams;
 
 public class MapActivity extends Activity
 {
@@ -41,6 +59,10 @@ public class MapActivity extends Activity
 	private int animationTarget_;
 	
 	private RatingBar ratingBar; 
+	
+	private Map<String,String> subCatLookup_;
+	
+	private LatLng currentPos;
 		
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +90,7 @@ public class MapActivity extends Activity
            }
        );
        
-       
-       
-
-       
-       
+  
         
 //    // Hide the keyboard
 //       getWindow().setSoftInputMode(
@@ -94,11 +112,31 @@ public class MapActivity extends Activity
         // Show our location, but hide the button
         map_.setMyLocationEnabled(true);
         map_.getUiSettings().setMyLocationButtonEnabled(false);
-        
+             
+        SearchData search = null;
+		try {
+			search = SearchData.getInstance();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		
+		int sizeOfSearch = search.data.size();
+		final String[] name = new String[sizeOfSearch];
+		final String[] lastName = new String[sizeOfSearch];
+		final String[] profile = new String[sizeOfSearch];
+		final String[] email = new String[sizeOfSearch];
+		final String[] rating = new String[sizeOfSearch];
+		final String[] rate = new String[sizeOfSearch];
+		final String[] schedule = new String[sizeOfSearch];
+		final String[] stringLat = new String[sizeOfSearch];
+		final String[] stringLon = new String[sizeOfSearch];
+		
+		
         try {
         	// Get our lat/lon
 			session_ = ServerSession.create();
-			LatLng currentPos = new LatLng(session_.getLat(), session_.getLon());
+			currentPos = new LatLng(session_.getLat(), session_.getLon());
 			
 			
 			// Build a LatLngBounds for all of the pins we will create, and include
@@ -106,31 +144,36 @@ public class MapActivity extends Activity
             LatLngBounds.Builder builder = new LatLngBounds.Builder();
             builder.include(currentPos);
             
-			
+           			
 			// Get the search results
 			//
 			// TODO This should be bundled....
-			SearchData search = SearchData.getInstance(); 
-			for(int i = 0; i<search.data.size(); i++)
+			
+			for(int i = 0; i<sizeOfSearch; i++)
 			{	
-				String name = search.data.get(i).get("username").toString();
-				String rating = search.data.get(i).get("rating").toString(); 
-				String rate = search.data.get(i).get("rate").toString(); 
-				String stringLat = search.data.get(i).get("lat").toString(); 
-				String stringLon =  search.data.get(i).get("lon").toString(); 
-
-				double markerLat = Double.parseDouble(stringLat);
-				double markerLon = Double.parseDouble(stringLon);
+				name[i] = search.data.get(i).get("username").toString();
+				lastName[i] = search.data.get(i).get("lastname").toString();
+				profile[i] = search.data.get(i).get("profile").toString(); 
+				email[i] = search.data.get(i).get("email").toString(); 
+				rating[i] = search.data.get(i).get("rating").toString(); 
+				rate[i] = search.data.get(i).get("rate").toString(); 
+				schedule[i] = search.data.get(i).get("schedule").toString(); 
+				stringLat[i] = search.data.get(i).get("lat").toString(); 
+				stringLon[i] =  search.data.get(i).get("lon").toString(); 
+				
+				double markerLat = Double.parseDouble(stringLat[i]);
+				double markerLon = Double.parseDouble(stringLon[i]);
 												
 				LatLng pos = new LatLng(markerLat, markerLon);
 				Marker user = map_.addMarker(
 			        new MarkerOptions()
         				.position(pos)
-        				.title(name)
-        				.snippet("Rating: " + rating + " Rate: " + rate)
+        				.title(name[i])
+        				.snippet("Rating: " + rating[i] + " Rate: " + rate[i] + " " + i )
         				.icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker))
 				 );
-								
+				
+			
 				// Add the position to our builder
 				builder.include(pos);
 			}
@@ -183,7 +226,7 @@ public class MapActivity extends Activity
                 */
                 
                 //Split the snippet string on the space character and store the results into an array.
-                String[] snippets = marker.getSnippet().split(" ");    
+                final String[] snippets = marker.getSnippet().split(" ");    
                 
                 TextView tvTitle = ((TextView)myContentsView.findViewById(R.id.title));
                 tvTitle.setText(marker.getTitle());
@@ -197,9 +240,34 @@ public class MapActivity extends Activity
                 // Log.d("Rating: " , snippets[1]);  
                 ratingBar = (RatingBar)myContentsView.findViewById(R.id.tutorRatingMap);
                 ratingBar.setRating(Float.parseFloat(snippets[1])); 
-                          
-             	//  ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.imgStar)));
-               
+                
+                /*
+                 * TODO: FINISH UP IMAGE LOADING
+                 * CURRENT IDEA IMAGE TOO LARGE
+                 * 
+                ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.mapImage)));
+                ImageLoader imageLoader = new ImageLoader(); 
+                String url = "http://omega.uta.edu/~jwe0053/picture.php?email="+email[Integer.parseInt(snippets[5])];
+                imageLoader.fetchDrawableOnThread(url, imgView);
+                */
+                
+            	map_.setOnInfoWindowClickListener(
+						  new OnInfoWindowClickListener(){
+						    public void onInfoWindowClick(Marker marker){
+						    	
+						    	 Intent intent = new Intent(MapActivity.this, com.mytutor.search.ViewProfile.class);
+				   	   		      intent.putExtra("username",name[Integer.parseInt(snippets[5])]);
+				   	   		      intent.putExtra("lastname",lastName[Integer.parseInt(snippets[5])]);
+				   	   		      intent.putExtra("rate",rate[Integer.parseInt(snippets[5])]);
+				   	   		      intent.putExtra("rating", rating[Integer.parseInt(snippets[5])]);;
+				   	   		      intent.putExtra("schedule",schedule[Integer.parseInt(snippets[5])]);
+				   	   		      intent.putExtra("profile",profile[Integer.parseInt(snippets[5])]);
+				   	   		      intent.putExtra("email",email[Integer.parseInt(snippets[5])]);
+							      startActivity(intent);;
+						    }
+						  }
+				);
+					                
                 return myContentsView;
             }
         });
@@ -282,8 +350,7 @@ public class MapActivity extends Activity
         dda.setStartOffset(0);
 //        dda.setAnimationListener(keyboardHider);
         
-        
-        
+
         Log.d("MapActivity", "Starting animation");
         viewToAnimate.startAnimation(dda);
        
@@ -291,10 +358,90 @@ public class MapActivity extends Activity
         // right away
         View viewToInvalidate = findViewById(R.id.MapRelativeLayout);
         viewToInvalidate.invalidate();
+        
+        final Map<String,String> subCatLookup_;
+        
+        subCatLookup_ = new HashMap<String,String>();
+	   
+        //allow network requests in main thread
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy); 
+	      
+        final Spinner mainCatSpinner_ = (Spinner)  findViewById(R.id.mainCatSpinner);
+        final Spinner subCatSpinner_  = (Spinner)  findViewById(R.id.subCatSpinner);
+        final Spinner radiusSpinner_  = (Spinner)  findViewById(R.id.searchRadius);
+        final EditText zipcodeEdit_   = (EditText) findViewById(R.id.editZipcode);
+
+        // Get the list of the main categories
+        List<String> mainCategories = session_.getMainCategories();
+        
+        //populate spinner for main categories
+        ArrayAdapter<String> adp1 = 
+            new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mainCategories);
+        
+        adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mainCatSpinner_.setAdapter(adp1);
+        
+        //set up listener to handle main category selection (to populate sub-category spinner)
+        mainCatSpinner_.setOnItemSelectedListener(new OnItemSelectedListener() 
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                populateSubCategory(mainCatSpinner_.getItemAtPosition(position).toString());
+            }
+            
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {}
+        });
+        
+        String zipCode = SearchParams.getZipcodeFromLla(session_.getLat(), session_.getLon()); 
+        zipcodeEdit_.setText(zipCode);
+        
+        final Button searchButton = (Button) findViewById(R.id.btnSubmit);
+
+        searchButton.setOnClickListener(
+			new View.OnClickListener()
+			{
+    			public void onClick(View v)
+    			{
+    				//Log.d("SearchActivity", "Got submit button click event");
+					Intent intent = new Intent(v.getContext(), com.mytutor.search.SearchResults.class);
+					
+					String subCat = subCatSpinner_.getSelectedItem().toString();
+					String radius = radiusSpinner_.getSelectedItem().toString();
+					String zipcode = zipcodeEdit_.getText().toString();
+					
+					intent.putExtra("lat",session_.getLat());
+   	   				intent.putExtra("lon",session_.getLon());
+   	   				intent.putExtra("subcat",subCatLookup_.get(subCat));
+   	   				intent.putExtra("radius",radius);
+   	   				startActivity(intent);
+    			}
+    		}
+		);
+    	           
     }
     
-    
-    
+    public void populateSubCategory(String mainCategory) {
+    	//populate post parameter with main category selection
+ 	   	ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+ 	   	postParameters.add(new BasicNameValuePair("category", mainCategory));
+ 	   
+ 	   	// Populate the map
+ 	   	// subCatLookup_.clear();
+ 	   	subCatLookup_ = session_.getSubCategories(mainCategory);
+ 	   
+ 	   	// Get the keys as a list
+ 	   	List<String> keys = new ArrayList<String>(subCatLookup_.keySet());
+ 	   
+ 	   	// Populate the listview
+ 	   	ArrayAdapter<String> adp1 = 
+ 	   			new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, keys);
+ 	   	adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final Spinner subCatSpinner_ = (Spinner)  findViewById(R.id.subCatSpinner);
+        subCatSpinner_.setAdapter(adp1);  
+    }
+
 }
 
 

@@ -41,12 +41,15 @@
             android:layout_height="wrap_content"
             android:progressDrawable="@drawable/custom_marker_rating_bar"
             android:isIndicator="true"
-            android:minHeight="25dp" />   
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/mapAdView"
-        android:layout_width="match_parent"
+            android:minHeight="25dp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-2605134093291532/3912014007" />
+        android:textColor="#619ee8"
+        android:text="Click to View Profile"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     </LinearLayout>
 </LinearLayout>
