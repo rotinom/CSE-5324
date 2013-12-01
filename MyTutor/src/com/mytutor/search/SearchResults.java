@@ -19,13 +19,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.*;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.mytutor.MapActivity;
 import com.mytutor.R;
 
@@ -41,7 +39,6 @@ public class SearchResults extends Activity
    {
 	   
 	   super.onCreate(savedInstanceState);
-	   Log.d("TESTING:", "POOP");
 	   setContentView(R.layout.activity_results);
 	   
 	    // Look up the AdView as a resource and load a request.
@@ -145,6 +142,22 @@ public class SearchResults extends Activity
 	   catch (Exception e) {
 		   Log.e("log_tag","Error in http connection!!" + e.toString());     
 	   }	   
+	   
+
+       // Set up handler for the profile button on the bottom of the activity
+       final Button searchButton = (Button) findViewById(R.id.btnMapButton);
+ 
+       searchButton.setOnClickListener(
+          new View.OnClickListener()
+          {
+              public void onClick(View view)
+              {
+                  Intent intent = new Intent(view.getContext(), MapActivity.class);
+                  view.getContext().startActivity(intent);
+              }
+          }
+       ); 
+ 
    } 
 
  

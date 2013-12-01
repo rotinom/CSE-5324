@@ -20,6 +20,15 @@
     </ListView>
     
 
-
+     <Button
+          android:id="@+id/btnMapButton"
+          style="@style/ButtonBarButton"
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:layout_gravity="bottom|center"
+          android:paddingLeft="45dp"
+          android:paddingRight="45dp"
+          android:textSize="30sp"
+          android:text="View on Map >" />
     
 </LinearLayout>
