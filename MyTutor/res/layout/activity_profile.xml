@@ -52,7 +52,7 @@
         android:layout_column="0"
         android:layout_columnSpan="1"
         android:layout_row="0"
-        android:layout_rowSpan="5"
+        android:layout_rowSpan="6"
         android:adjustViewBounds="true"
         android:background="@drawable/button_bg"
         android:onClick="onSelectPicture"
@@ -62,7 +62,7 @@
    	/>
 
     <TextView
-        android:id="@+id/firstName"
+        android:id="@+id/name_text"
         android:layout_width="fill_parent"
         android:layout_column="1"
         android:layout_columnSpan="2"
@@ -70,12 +70,9 @@
         android:layout_marginRight="10dp"
         android:layout_row="0"
         android:ems="10"
-        android:hint="First Name"
-        android:inputType="textPersonName"
-        android:singleLine="true" 
-        android:textAppearance="?android:attr/textAppearanceMedium" >
-
-    </TextView>
+        android:hint="Name"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/emailAddress"
@@ -83,16 +80,50 @@
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_columnSpan="2"
-        android:layout_marginRight="10dp"
-        android:layout_row="2"
+        android:layout_marginLeft="25dp"
+        android:layout_row="1"
         android:ems="10"
         android:hint="E-Mail Address"
-        android:inputType="textEmailAddress"
         android:lines="1"
+        android:maxLines="1"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/zipCode"
+        android:layout_column="1"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_row="2"
+        android:ems="10"
+        android:hint="Zip Code"
         android:textAppearance="?android:attr/textAppearanceMedium" 
-        android:maxLines="1" />
+	/>
 
-
+    <TextView
+        android:id="@+id/schedule"
+        android:layout_column="1"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_row="3"
+        android:ems="10"
+        android:hint="Schedule"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+  	/>
+    
+    <TextView
+        android:id="@+id/profileComment"
+        android:layout_width="wrap_content"
+        android:layout_column="1"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginLeft="25dp"
+        android:layout_row="4"
+        android:ems="10"
+        android:hint="Profile Comment"
+        android:lines="3"
+        android:maxLines="3"
+        android:minLines="3"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
     <ListView
         android:id="@+id/categoryListView"
         android:layout_width="match_parent"
@@ -122,15 +153,7 @@
         
          -->
 
-    <TextView
-        android:id="@+id/zipCode"
-        android:layout_column="1"
-        android:layout_gravity="right|center_vertical"
-        android:layout_row="3"
-        android:ems="10"
-        android:hint="Zip Code"
-        android:textAppearance="?android:attr/textAppearanceMedium" 
-        android:inputType="textPostalAddress" />
+
 
 </GridLayout>
 

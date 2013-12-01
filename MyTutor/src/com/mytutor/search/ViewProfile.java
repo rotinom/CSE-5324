@@ -31,7 +31,7 @@ public class ViewProfile extends Activity
 	   setContentView(R.layout.result_profile);
 	   
        ImageView image=(ImageView)findViewById(R.id.image);
-       TextView firstName = (TextView)findViewById(R.id.firstName);
+       TextView firstName = (TextView)findViewById(R.id.name_text);
        TextView lastName = (TextView)findViewById(R.id.lastName);
        TextView rate = (TextView)findViewById(R.id.rate);
        RatingBar ratingBar = (RatingBar)findViewById(R.id.rating);

@@ -6,12 +6,6 @@
           android:enabled="true" 
           android:visible="true" 
           android:title="Show Map" 
-          android:showAsAction="always"/><item android:id="@+id/action_home" 
-          android:icon="@drawable/ic_menu_home" 
-          android:titleCondensed="Home" 
-          android:enabled="true" 
-          android:visible="true" 
-          android:title="Go To Home Screen" 
           android:showAsAction="always"/>
  	
     

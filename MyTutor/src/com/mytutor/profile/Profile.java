@@ -146,9 +146,9 @@ public class Profile {
                 lon_ = json_data.getDouble("lon");
                 setZipCode(json_data.getString("zipcode"));
                 premium_ = (0 != json_data.getInt("premium"));
-                schedule_ = json_data.getString("schedule");
+                setSchedule(json_data.getString("schedule"));
                 rating_ = json_data.getDouble("rating");
-                setProfile(json_data.getString("profile"));
+                setProfileText(json_data.getString("profile"));
                 rate_ = json_data.getDouble("rate");
                 
                 String subcat_id = json_data.getString("subCategory");
@@ -209,11 +209,11 @@ public class Profile {
         email_ = email;
     }
 
-    public String getProfile() {
+    public String getProfileText() {
         return profile_;
     }
 
-    public void setProfile(String profile) {
+    public void setProfileText(String profile) {
         profile_ = profile;
     }
 
@@ -232,5 +232,13 @@ public class Profile {
     public void setCategories(Map<String, ArrayList<String>> categories) {
         categories_ = categories;
     }
+
+	public String getSchedule() {
+		return schedule_;
+	}
+
+	public void setSchedule(String schedule) {
+		schedule_ = schedule;
+	}
     
 }

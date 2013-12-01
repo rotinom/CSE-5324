@@ -126,51 +126,11 @@ public class ProfileActivity extends Activity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-//        // for very easy animations. If available, use these APIs to fade-in
-//        // the progress spinner.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//            int shortAnimTime = getResources().getInteger(
-//                    android.R.integer.config_shortAnimTime);
-//
-//            statusLayout_.setVisibility(View.VISIBLE);
-//            statusLayout_.animate().setDuration(shortAnimTime)
-//                    .alpha(show ? 1 : 0)
-//                    .setListener(new AnimatorListenerAdapter() {
-//                        @Override
-//                        public void onAnimationEnd(Animator animation) {
-//                            statusLayout_.setVisibility(show ? View.VISIBLE
-//                                    : View.GONE);
-//                        }
-//                    });
-//
-//            topLayout_.setVisibility(View.VISIBLE);
-//            topLayout_.animate().setDuration(shortAnimTime)
-//                    .alpha(show ? 0 : 1)
-//                    .setListener(new AnimatorListenerAdapter() {
-//                        @Override
-//                        public void onAnimationEnd(Animator animation) {
-//                            topLayout_.setVisibility(show ? View.GONE
-//                                    : View.VISIBLE);
-//                        }
-//                    });
-//        } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             statusLayout_.setVisibility(show ? View.VISIBLE : View.GONE);
             topLayout_.setVisibility(show ? View.GONE : View.VISIBLE);
-//        }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -264,7 +224,7 @@ public class ProfileActivity extends Activity {
     
     private void setValues(Profile profile) {
         
-    	TextView firstName = (TextView)findViewById(R.id.firstName);
+    	TextView firstName = (TextView)findViewById(R.id.name_text);
         String fn = profile.getFirstName();
         Log.d(log_name, "Setting first name to: " + fn);
         
@@ -281,7 +241,13 @@ public class ProfileActivity extends Activity {
         Log.d(log_name, "Setting zipcode to: " + profile.getZipCode());
         zipcode.setText(profile.getZipCode());
         
+        TextView schedule = (TextView)findViewById(R.id.schedule);
+        Log.d(log_name, "Setting schedule to: " + profile.getSchedule());
+        schedule.setText(profile.getSchedule());
         
+        TextView profileText = (TextView)findViewById(R.id.profileComment);
+        Log.d(log_name, "Setting profileText to: " + profile.getProfileText());
+        profileText.setText(profile.getProfileText());
         
         // Get the category data
         ArrayList<HashMap<String, String>> data = 
