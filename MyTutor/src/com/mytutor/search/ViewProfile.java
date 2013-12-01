@@ -32,7 +32,6 @@ public class ViewProfile extends Activity
 	   
        ImageView image=(ImageView)findViewById(R.id.image);
        TextView firstName = (TextView)findViewById(R.id.name_text);
-       TextView lastName = (TextView)findViewById(R.id.lastName);
        TextView rate = (TextView)findViewById(R.id.rate);
        RatingBar ratingBar = (RatingBar)findViewById(R.id.rating);
        TextView ratingView = (TextView) findViewById(R.id.ratingInfo);
@@ -43,8 +42,15 @@ public class ViewProfile extends Activity
        ImageLoader imageLoader = new ImageLoader(); 
        String url = "http://omega.uta.edu/~jwe0053/picture.php?email="+getIntent().getExtras().getString("email");
        imageLoader.fetchDrawableOnThread(url, image);
-       firstName.setText(getIntent().getExtras().getString("username"));
-       lastName.setText(getIntent().getExtras().getString("lastname"));
+       
+       String fn = getIntent().getExtras().getString("username");
+       String ln = getIntent().getExtras().getString("lastname");
+       String name = fn + " " + ln;
+       firstName.setText(name);
+       
+       setTitle(name + "'s Tutoring Profile");
+       
+       
        rate.setText(getIntent().getExtras().getString("rate"));
        ratingBar.setRating(Float.parseFloat(getIntent().getExtras().getString("rating")));
        ratingView.setText(String.format("(%.1f)", Float.parseFloat(getIntent().getExtras().getString("rating"))));

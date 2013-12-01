@@ -228,7 +228,6 @@ public class ProfileActivity extends Activity {
         String fn = profile.getFirstName();
         Log.d(log_name, "Setting first name to: " + fn);
         
-        TextView lastName = (TextView)findViewById(R.id.lastName);
         String ln = profile.getLastName();
         Log.d(log_name, "Setting last name to: " + ln);
         firstName.setText(fn + " " + ln);
