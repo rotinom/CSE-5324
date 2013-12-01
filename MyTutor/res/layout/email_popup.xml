@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="10dp" >
+   
+    <TextView
+        android:id="@+id/commentLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Message:"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+   
+   
+    <EditText
+        android:id="@+id/comments"
+        android:inputType="textMultiLine"
+        android:lines="8" 
+        android:minLines="6" 
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent" 
+        android:scrollbars="vertical" 
+        android:background="#444444"/>
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center_horizontal"
+    android:paddingLeft="20dp" >
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:textColor="#FFFFFFFF"
+            android:textSize="20sp" />
+        </LinearLayout>
+    
+</LinearLayout>
