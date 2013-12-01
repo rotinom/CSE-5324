@@ -1,11 +1,17 @@
 package com.mytutor;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
@@ -240,17 +246,25 @@ public class MapActivity extends Activity
                 // Log.d("Rating: " , snippets[1]);  
                 ratingBar = (RatingBar)myContentsView.findViewById(R.id.tutorRatingMap);
                 ratingBar.setRating(Float.parseFloat(snippets[1])); 
-                
-                /*
-                 * TODO: FINISH UP IMAGE LOADING
-                 * CURRENT IDEA IMAGE TOO LARGE
-                 * 
+                         
+                // Load the users image for the info window. 
                 ImageView imgView = ((ImageView)myContentsView.findViewById((R.id.mapImage)));
                 ImageLoader imageLoader = new ImageLoader(); 
                 String url = "http://omega.uta.edu/~jwe0053/picture.php?email="+email[Integer.parseInt(snippets[5])];
-                imageLoader.fetchDrawableOnThread(url, imgView);
-                */
+                InputStream is = null;
+				try {
+					is = fetch(url);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                Drawable drawable = Drawable.createFromStream(is, "src");
+                imgView.setImageDrawable(drawable);
                 
+                // On InfoWindowClick bring up the current users profile. 
             	map_.setOnInfoWindowClickListener(
 						  new OnInfoWindowClickListener(){
 						    public void onInfoWindowClick(Marker marker){
@@ -271,6 +285,13 @@ public class MapActivity extends Activity
                 return myContentsView;
             }
         });
+    }
+    
+    private InputStream fetch(String urlString) throws MalformedURLException, IOException {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+        HttpGet request = new HttpGet(urlString);
+        HttpResponse response = httpClient.execute(request);
+        return response.getEntity().getContent();
     }
     
     public void onClickMyLocation(View view) {
