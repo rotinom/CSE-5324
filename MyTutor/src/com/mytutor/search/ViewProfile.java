@@ -52,14 +52,17 @@ public class ViewProfile extends Activity
        profile.setText(getIntent().getExtras().getString("profile"));
        
        AuthenticationHelper ah = new AuthenticationHelper(this);
-       
+
+		Log.i("SearchResults", "email=" + email_);
        try {
 			email_ = ah.getToken();
 		} catch (Exception e1) {
-			e1.printStackTrace();
+			//e1.printStackTrace();
+			emailMe.setEnabled(false);
 		}
+		Log.i("SearchResults", "email=" + email_);
         if(email_ == "")
-        	emailMe.setVisibility(1);
+        	emailMe.setEnabled(false);
        
    }
    
