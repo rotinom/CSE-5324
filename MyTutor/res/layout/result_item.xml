@@ -35,6 +35,15 @@
             android:text="FirstName"
             android:textColor="#FFF38585"
             android:textSize="20sp" />
+        
+        <TextView
+            android:id="@+id/premium"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Premium Member"
+            android:textColor="#FFFF00"
+            android:textSize="20sp" />
+        
         </LinearLayout>
 
 <LinearLayout 

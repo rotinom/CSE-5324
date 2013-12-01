@@ -78,22 +78,33 @@ public class SearchResults extends Activity
 		   try{
 			   JSONArray jArray = new JSONArray(result);
 			   Log.i("log_tag","data: "+ jArray.toString());
-			   for(int i=0;i<jArray.length();i++){
+			   for(int premInt = 0; premInt<2; premInt++){
+			     for(int i=0;i<jArray.length();i++){
 				   JSONObject json_data = jArray.getJSONObject(i);
-				   HashMap<String, String> map = new HashMap<String, String>();
-				   map.put("email", json_data.getString("emailAddress") );
-				   float miles = Float.valueOf(json_data.getString("distance") );
-				   map.put("distance", (int)miles + " miles ");
-				   map.put("username", json_data.getString("firstName") + " ");
-				   map.put("lastname", json_data.getString("lastName") + " ");
-				   map.put("rate", "$"+json_data.getString("rate")+"/hr ");
-				   map.put("rating", json_data.getString("rating"));
-				   map.put("lat", json_data.getString("lat"));
-				   map.put("lon", json_data.getString("lon"));
-				   map.put("schedule", json_data.getString("schedule"));
-				   map.put("profile", json_data.getString("profile"));
-				   data.add(map); 
-				   search.data.add(map);
+				   String premium = json_data.getString("premium");
+				   //only add premium members first
+				   Log.e("log_tag","premium = " + premium);
+				   
+				   if((premInt == 0 && premium.equals("1")) ||
+					  (premInt == 1 && premium.equals("0")))
+				   {
+				     HashMap<String, String> map = new HashMap<String, String>();
+				     map.put("email", json_data.getString("emailAddress") );
+				     float miles = Float.valueOf(json_data.getString("distance") );
+				     map.put("distance", (int)miles + " miles ");
+				     map.put("username", json_data.getString("firstName") + " ");
+				     map.put("lastname", json_data.getString("lastName") + " ");
+				     map.put("rate", "$"+json_data.getString("rate")+"/hr ");
+				     map.put("rating", json_data.getString("rating"));
+				     map.put("lat", json_data.getString("lat"));
+				     map.put("lon", json_data.getString("lon"));
+				     map.put("schedule", json_data.getString("schedule"));
+				     map.put("profile", json_data.getString("profile"));
+				     map.put("premium", json_data.getString("premium"));
+				     data.add(map); 
+				     search.data.add(map);
+				   }
+			     }
 			   }
 			   
 			   // Getting adapter by passing xml data ArrayList

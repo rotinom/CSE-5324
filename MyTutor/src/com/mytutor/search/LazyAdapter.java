@@ -55,6 +55,7 @@ public class LazyAdapter extends BaseAdapter {
         TextView rate = (TextView)vi.findViewById(R.id.rate);
         RatingBar ratingBar = (RatingBar) vi.findViewById(R.id.rating);
         TextView email = (TextView)vi.findViewById(R.id.email);
+        TextView premium = (TextView)vi.findViewById(R.id.premium);
  
         HashMap<String, String> tutor = new HashMap<String, String>();
         tutor = data.get(position);
@@ -66,6 +67,9 @@ public class LazyAdapter extends BaseAdapter {
         ratingBar.setRating(Float.parseFloat(tutor.get("rating")));
         email.setText(tutor.get("email"));
         imageLoader.fetchDrawableOnThread("http://omega.uta.edu/~jwe0053/picture.php?email="+tutor.get("email"), image);
+        
+        if(Integer.parseInt(tutor.get("premium")) != 1)
+        	premium.setVisibility(View.GONE);
         return vi;
     }
 }
