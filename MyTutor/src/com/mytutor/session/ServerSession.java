@@ -164,27 +164,9 @@ implements
 	}
 
 	@Override
-	public SessionStateEnum register_user(String username, String password) {
+	public boolean register_user(String username, String password) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SessionStateEnum login(String name, String password) {
-		return SessionStateEnum.OK;
-	}
-
-	@Override
-	public SessionStateEnum change_password(String username,
-			String old_password, String new_password) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public SessionStateEnum search(SearchParams[] params) {
-		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	@Override
@@ -369,4 +351,49 @@ implements
 	   public String getCategory(String subcat_id) {
 	       return subcatToCatMap_.get(getSubcategoryNameFromId(subcat_id));
 	   }
+	   
+		@Override
+		public 	String login(String username, String password) {
+			if (null == username || username.isEmpty()){
+				Log.d(logName_, "Got bad username");
+				return "";
+			}
+			else if(null == password || password.isEmpty()){
+				Log.d(logName_, "Got bad password");
+				return "";
+			}
+			
+	       // call executeHttpPost method passing necessary parameters 
+	       try {
+	    	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+	    	   postParameters.add(new BasicNameValuePair("emailAddress", username));
+	    	   postParameters.add(new BasicNameValuePair("userPassword", password));
+	    	   
+	           //send off http request to php script on omega
+	           Time start = new Time();
+	           start.setToNow();
+	           String response = 
+	    		   CustomHttpClient.executeHttpPost(
+					   "http://omega.uta.edu/~jwe0053/checkLogin.php", 
+					   postParameters
+				   );
+	           Time stop = new Time();
+	           stop.setToNow();
+	           
+	           Log.d(logName_, "checkLogin.php took: " + (stop.toMillis(true)-start.toMillis(true)) + " milliseconds");
+	           
+	           int code = Integer.parseInt(response.toString().trim()); 
+	           
+	           if(1 == code){
+	        	   return username;
+	           }
+	           else{
+	        	   return "";
+	           	}
+	       	}
+	       	catch (Exception e) {
+	           Log.e("log_tag","Error in http connection!!" + e.toString());     
+	       	}		
+	       	return "";
+		}
 }

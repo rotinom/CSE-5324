@@ -5,14 +5,6 @@ import android.widget.ImageView;
 import com.mytutor.search.SearchParams;
 
 public interface Session {
-	
-	enum SessionStateEnum{
-		OK,
-		LoginRequired,
-		LoginFailed,
-		UserNameInUse,
-		PasswordNotComplicated
-	};
 
 	/**
 	 * This function will allow the caller to determine if the username 
@@ -43,7 +35,7 @@ public interface Session {
 	 * @param password The user's password
 	 * @return
 	 */
-	SessionStateEnum register_user(String username, String password);
+	boolean register_user(String username, String password);
 	
 	
 	/**
@@ -53,34 +45,7 @@ public interface Session {
 	 * @param password The user's password
 	 * @return OK if login was successful, LoginFailed otherwise
 	 */
-	SessionStateEnum login(String name, String password);
-	
-	/**
-	 * Allows the user to change their password
-	 * 
-	 * @param username The username to login with
-	 * @param old_password The users old password
-	 * @param new_password The users new password
-	 * @return 
-	 * 		OK if successful,
-	 * 		LoginRequired if the session is not logged in
-	 * 		LoginFailed if old_password is incorrect
-	 *      PasswordNotComplicated if the password is not complicated enough
-	 */
-	SessionStateEnum change_password(String username, String old_password, String new_password);
-	
-	/**
-	 * Allows the caller to search the database for relevant information
-	 * 
-	 * @param params The search parameters to use for the search
-	 * @param results[out] The results of the search
-	 * 
-	 * @return 
-	 * 		OK if successful
-	 * 		LoginRequired if login has not yet been called
-	 */
-	SessionStateEnum search(SearchParams[] params);
-	
+	String login(String name, String password);
 	
 	public void getProfilePicAsync(String email, ImageView dest);
 	

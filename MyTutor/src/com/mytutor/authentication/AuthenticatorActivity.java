@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.mytutor.R;
+import com.mytutor.session.ServerSession;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -45,13 +46,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
     private String mAuthTokenType;
 	
 	private final static String log_name = "AuthenticatorActivity";
-	
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -73,6 +67,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	private View mLoginFormView;
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
+	
+	private ServerSession session_;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +77,13 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 		setContentView(R.layout.activity_authenticate);
 		
 		setTitle("Authenticate to MyTutor Service");
+		
+		try {
+			session_ = ServerSession.create();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		accountManager_ = AccountManager.get(getBaseContext());
 		
@@ -136,28 +139,6 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	 */
 	public void attemptLogin() {
 		
-		final String userName = ((TextView) findViewById(R.id.email)).getText().toString();
-	    final String userPass = ((TextView) findViewById(R.id.password)).getText().toString();
-	    new AsyncTask<Void, Void, Intent>() {
-	        @Override
-	        protected Intent doInBackground(Void... params) {
-//	            String authtoken = sServerAuthenticate.userSignIn(userName, userPass, mAuthTokenType);
-	        	String authtoken = userName;
-	            final Intent res = new Intent();
-	            res.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
-	            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthenticationParams.ACCOUNT_TYPE);
-	            res.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
-	            res.putExtra(PARAM_USER_PASS, userPass);
-	            return res;
-	        }
-	        @Override
-	        protected void onPostExecute(Intent intent) {
-	            finishLogin(intent);
-	        }
-	    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		
-		
-		
 		if (mAuthTask != null) {
 			return;
 		}
@@ -194,19 +175,19 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 			focusView = mEmailView;
 			cancel = true;
 		}
-//
-//		if (cancel) {
-//			// There was an error; don't attempt login and focus the first
-//			// form field with an error.
-//			focusView.requestFocus();
-//		} else {
-//			// Show a progress spinner, and kick off a background task to
-//			// perform the user login attempt.
-//			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-//			showProgress(true);
-//			mAuthTask = new UserLoginTask();
-//			mAuthTask.execute((Void) null);
-//		}
+
+		if (cancel) {
+			// There was an error; don't attempt login and focus the first
+			// form field with an error.
+			focusView.requestFocus();
+		} else {
+			// Show a progress spinner, and kick off a background task to
+			// perform the user login attempt.
+			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			showProgress(true);
+			mAuthTask = new UserLoginTask();
+			mAuthTask.execute((Void) null);
+		}
 	}
 	
 	
@@ -245,40 +226,10 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
 	private void showProgress(final boolean show) {
-		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-		// for very easy animations. If available, use these APIs to fade-in
-		// the progress spinner.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-			int shortAnimTime = getResources().getInteger(
-					android.R.integer.config_shortAnimTime);
-
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
-
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
-		} else {
-			// The ViewPropertyAnimator APIs are not available, so simply show
-			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-		}
+		// The ViewPropertyAnimator APIs are not available, so simply show
+		// and hide the relevant UI components.
+		mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+		mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 	}
 
 	/**
@@ -286,25 +237,30 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 	 * the user.
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+		
+		Intent res_;
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
 
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
+			final String userName = ((TextView) findViewById(R.id.email)).getText().toString();
+		    final String userPass = ((TextView) findViewById(R.id.password)).getText().toString();
+			
+	    	String authtoken = session_.login(userName,  userPass);
+	    	
+	    	if(null == authtoken || "" == authtoken){
+	    		return false;
+	    	}
+	    	
+	        res_ = new Intent();
+	        res_.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
+	        res_.putExtra(AccountManager.KEY_ACCOUNT_TYPE, AuthenticationParams.ACCOUNT_TYPE);
+	        res_.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
+	        res_.putExtra(PARAM_USER_PASS, userPass);
+	        
 
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
+	        
+	        
 			// TODO: register the new account here.
 			return true;
 		}
@@ -315,7 +271,8 @@ public class AuthenticatorActivity extends AccountAuthenticatorActivity {
 			showProgress(false);
 
 			if (success) {
-				finish();
+	            finishLogin(res_);
+	            showProgress(false);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
