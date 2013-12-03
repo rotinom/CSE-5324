@@ -1,31 +1,23 @@
 <?php
-echo "trying to mail";
-//$name=$_POST['name'];
-$name="Jonathan";
-//$from=$_POST['from'];
-$from="sean.crane@mavs.uta.edu";
-//$to=$_POST['to'];
-$to="jonathan.eason@mavs.uta.edu";
-//$body=$_POST['body'];
-$body="MIke check one two!!";
-echo "trying to mail0";
-require("class.phpmailer.php");
-echo "trying to mail00";
+require_once('class.phpmailer.php');
+$fromName=$_POST['fromName'];
+//$fromName="Sean Crane";
+$from=$_POST['fromAddress'];
+//$from="sean.crane@mavs.uta.edu";
+$toName=$_POST['toName'];
+//$toName="Jonathan Eason";
+$to=$_POST['toAddress'];
+//$to="jonathan.eason@mavs.uta.edu";
+$body=$_POST['body'];
+//$body="MIke check one two!!";
+
 $mail = new PHPMailer();
-//$mail->IsSMTP();
-echo "trying to mail1";
-$mail->SMTPAuth = true;
-$mail->Host = "mail.uta.edu";
-$mail->Port = 26;
-echo "trying to mail2";
-$mail->Username = "jwe0053";
-$mail->Password = "1337Pazwerd1!!";
-$mail->SetFrom($from, 'Web App');
-echo "trying to mail3";
-$mail->Subject = "New MyTutor Message";
-$mail->MsgHTML($body);
 $mail->AddAddress($to, $name);
-echo "trying to mail4";
+$mail->Subject = "Email from MyTutor";
+$mail->From = $from;
+$mail->FromName = $fromName;
+$mail->Body = $body;
+
 if($mail->Send()) {
   echo "Message sent!";
 } else {
